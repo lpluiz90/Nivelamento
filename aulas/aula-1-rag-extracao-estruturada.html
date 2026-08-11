@@ -293,8 +293,9 @@ mark{padding:1px 6px;border-radius:4px;font-weight:600;color:#1a2332;background:
   padding:0;background:#050a0e;color:#dff7e9;
   --fos:#5ef2a0;      /* fósforo verde — cor de instrumentação */
   --fos-fraco:rgba(94,242,160,.42);
-  /* imagem de fundo gerada com gemini-3.1-flash-lite-image, 16:9, 1K */
-  --poster-img:url("../assets/abertura.png");
+  /* sem --poster-img aqui de proposito: a foto ja aparece na capa do hub
+     (index.html); esta aula usa a arte 100% vetorial pra nao repetir a
+     mesma imagem duas telas seguidas quando o aluno clica pra entrar. */
 }
 .slide.poster.active{display:block}
 .slide.poster::before{display:none}      /* sem a faixa superior do deck */
@@ -431,7 +432,7 @@ mark{padding:1px 6px;border-radius:4px;font-weight:600;color:#1a2332;background:
      Slide de imagem. A arte é desenhada em CSS+SVG; para usar uma
      imagem gerada por IA, veja a instrução no bloco .slide.poster
      dentro do <style>. -->
-<section class="slide poster com-foto active">
+<section class="slide poster active">
 
   <div class="cenario" aria-hidden="true">
     <div class="grade"></div>
