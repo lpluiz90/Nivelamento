@@ -351,12 +351,18 @@ mark{padding:1px 6px;border-radius:4px;font-weight:600;color:#1a2332;background:
 .poster .chip b{display:block;font-size:10.5px;font-weight:800;letter-spacing:1.7px;
   color:#9fc7b3;text-transform:uppercase;line-height:1.4}
 
-/* --- painel de instrumentação, à direita --- */
+/* --- coluna de instrumentação, à direita: mini 3D em cima, lista embaixo ---
+   O wrapper leva a âncora (right/bottom) que antes era só do .hud; ele
+   cresce para cima a partir do MESMO bottom:122px de sempre, então a
+   lista não se move — só ganha um painel novo acima, sem eu precisar
+   adivinhar em pixels a altura de nenhum dos dois blocos. */
+.poster .paineis{position:absolute;right:74px;bottom:122px;width:306px;z-index:3;
+  display:flex;flex-direction:column;gap:14px}
+
 /* Painel fosco: a imagem de fundo é clara e movimentada desse lado,
    então o painel precisa de base própria. O rgba sozinho já resolve
    o contraste; o backdrop-filter é ganho extra onde houver suporte. */
-.poster .hud{position:absolute;right:74px;bottom:122px;width:306px;z-index:3;
-  padding:18px 20px 13px;border-radius:13px;
+.poster .hud{padding:18px 20px 13px;border-radius:13px;
   background:rgba(4,11,15,.66);
   border:1px solid rgba(94,242,160,.26);
   box-shadow:0 12px 36px rgba(0,0,0,.5);
@@ -370,8 +376,12 @@ mark{padding:1px 6px;border-radius:4px;font-weight:600;color:#1a2332;background:
 .poster .hud p::before{content:"";width:9px;height:9px;flex:none;transform:rotate(45deg);
   border:1.6px solid var(--fos);background:rgba(94,242,160,.38)}
 
-/* --- constelação de nós (grafo de conhecimento) --- */
-.poster .grafo{position:absolute;right:44px;top:186px;width:540px;height:470px;z-index:2;opacity:.95}
+.poster .mini3d{width:100%;height:230px;border-radius:13px;cursor:grab;
+  background:rgba(4,11,15,.5);
+  border:1px solid rgba(94,242,160,.22);
+  box-shadow:0 12px 30px rgba(0,0,0,.4);
+  -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+
 .poster .chaves{position:absolute;right:250px;top:250px;z-index:1;
   font-size:340px;font-weight:800;line-height:1;color:rgba(94,242,160,.055);
   font-family:Consolas,"Courier New",monospace;user-select:none}
@@ -415,10 +425,6 @@ mark{padding:1px 6px;border-radius:4px;font-weight:600;color:#1a2332;background:
 .poster .foto::after{content:"";position:absolute;inset:0;
   background:linear-gradient(90deg,rgba(3,7,10,.90) 0%,rgba(3,7,10,.64) 34%,
              rgba(3,7,10,.16) 58%,rgba(3,7,10,.44) 100%)}
-/* com imagem de fundo, a arte vetorial sai de cena para não competir */
-.poster.com-foto .grafo,
-.poster.com-foto .chaves,
-.poster.com-foto .grade{display:none}
 
 @media print{ .poster .scan{display:none} }
 </style>
@@ -441,39 +447,6 @@ mark{padding:1px 6px;border-radius:4px;font-weight:600;color:#1a2332;background:
   </div>
 
   <div class="chaves" aria-hidden="true">{ }</div>
-
-  <!-- constelação de nós: documentos indexados virando conhecimento consultável -->
-  <svg class="grafo" viewBox="0 0 540 470" aria-hidden="true">
-    <defs>
-      <filter id="brilho" x="-60%" y="-60%" width="220%" height="220%">
-        <feGaussianBlur stdDeviation="7" result="b"/>
-        <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
-      </filter>
-      <radialGradient id="nucleo">
-        <stop offset="0%"  stop-color="#bcffdc"/>
-        <stop offset="60%" stop-color="#5ef2a0"/>
-        <stop offset="100%" stop-color="#0f6b3f"/>
-      </radialGradient>
-    </defs>
-    <g stroke="#5ef2a0" stroke-opacity=".38" stroke-width="1.2" fill="none">
-      <path d="M270 225 L270 62 M270 225 L126 128 M270 225 L414 118 M270 225 L58 258
-               M270 225 L470 250 M270 225 L142 366 M270 225 L392 372 M270 225 L270 436
-               M126 128 L270 62 M270 62 L414 118 M414 118 L470 250 M470 250 L392 372
-               M392 372 L270 436 M270 436 L142 366 M142 366 L58 258 M58 258 L126 128
-               M336 186 L270 225 M336 186 L414 118 M190 292 L270 225 M190 292 L142 366"/>
-    </g>
-    <g fill="#5ef2a0" filter="url(#brilho)">
-      <circle cx="270" cy="62"  r="7"/><circle cx="126" cy="128" r="6"/>
-      <circle cx="414" cy="118" r="8"/><circle cx="58"  cy="258" r="6"/>
-      <circle cx="470" cy="250" r="7"/><circle cx="142" cy="366" r="7"/>
-      <circle cx="392" cy="372" r="6"/><circle cx="270" cy="436" r="8"/>
-      <circle cx="336" cy="186" r="4"/><circle cx="190" cy="292" r="4"/>
-    </g>
-    <circle cx="270" cy="225" r="26" fill="url(#nucleo)" filter="url(#brilho)"/>
-    <circle cx="270" cy="225" r="44" fill="none" stroke="#5ef2a0" stroke-opacity=".45" stroke-width="1.4"/>
-    <circle cx="270" cy="225" r="62" fill="none" stroke="#5ef2a0" stroke-opacity=".22"
-            stroke-width="1.2" stroke-dasharray="5 9"/>
-  </svg>
 
   <div class="titulo">
     <span class="kick">Instrução rápida de nivelamento</span>
@@ -502,13 +475,18 @@ mark{padding:1px 6px;border-radius:4px;font-weight:600;color:#1a2332;background:
     </div>
   </div>
 
-  <div class="hud">
-    <h4>Assuntos da instrução</h4>
-    <p>LLM</p>
-    <p>Fine Tuning</p>
-    <p>RAG</p>
-    <p>Busca semântica</p>
-    <p>Extração estruturada</p>
+  <div class="paineis">
+    <!-- prévia dos vetores em 3D que a turma vai ver de novo, animados
+         e explicados, nos slides de banco vetorial mais adiante -->
+    <canvas class="mini3d" id="capaVec3d" width="612" height="460" aria-hidden="true"></canvas>
+    <div class="hud">
+      <h4>Assuntos da instrução</h4>
+      <p>LLM</p>
+      <p>Fine Tuning</p>
+      <p>RAG</p>
+      <p>Busca semântica</p>
+      <p>Extração estruturada</p>
+    </div>
   </div>
 
   <div class="rodape">
@@ -526,6 +504,80 @@ mark{padding:1px 6px;border-radius:4px;font-weight:600;color:#1a2332;background:
 
   <div class="notes"><b>Slide de abertura.</b> Deixe projetado enquanto a turma entra e se acomoda. Não há nada a explicar aqui — avance assim que for começar.</div>
 </section>
+
+<!-- Mini visualização 3D da capa: os mesmos três grupos (azul/âmbar/roxo)
+     dos slides de banco vetorial mais adiante, girando devagar, sem grade
+     nem rótulo — é só a prévia. Script isolado numa IIFE própria: não
+     toca no motor 3D compartilhado nem nas variáveis dos outros slides. -->
+<script>
+(function(){
+  var cv = document.getElementById('capaVec3d');
+  if(!cv) return;
+  var ctx = cv.getContext('2d'), W = 306, H = 230;
+  ctx.scale(2, 2);
+
+  var GRUPOS = [
+    { c:'#098CDF', p:[-1.1,  0.5,  0.4] },
+    { c:'#b45309', p:[ 1.05, 0.7, -0.5] },
+    { c:'#7e22ce', p:[ 0.1, -0.75, 0.8] }
+  ];
+  var PTS = [];
+  GRUPOS.forEach(function(g){
+    for(var i = 0; i < 12; i++){
+      PTS.push({
+        x: g.p[0] + (Math.random()-0.5)*0.9,
+        y: g.p[1] + (Math.random()-0.5)*0.9,
+        z: g.p[2] + (Math.random()-0.5)*0.9,
+        c: g.c
+      });
+    }
+  });
+
+  var yaw = -0.6, pitch = -0.36, ESC = 58, F = 4.4, CX = W/2, CY = H/2;
+
+  function proj(x, y, z){
+    var cw = Math.cos(yaw), sw = Math.sin(yaw);
+    var X = x*cw - z*sw, Z = x*sw + z*cw;
+    var cp = Math.cos(pitch), sp = Math.sin(pitch);
+    var Y = y*cp - Z*sp; Z = y*sp + Z*cp;
+    var k = F/(F+Z);
+    return { x: CX + X*k*ESC, y: CY - Y*k*ESC, s: k, z: Z };
+  }
+
+  function desenha(){
+    ctx.clearRect(0, 0, W, H);
+    var qs = PTS.map(function(p){
+      var q = proj(p.x, p.y, p.z); q.c = p.c; return q;
+    }).sort(function(a, b){ return b.z - a.z; });   /* mais distante primeiro */
+    qs.forEach(function(q){
+      ctx.globalAlpha = 0.5 + 0.45*q.s;
+      ctx.shadowBlur = 8; ctx.shadowColor = q.c;
+      ctx.fillStyle = q.c;
+      ctx.beginPath(); ctx.arc(q.x, q.y, 3.2*q.s, 0, 6.284); ctx.fill();
+    });
+    ctx.shadowBlur = 0; ctx.globalAlpha = 1;
+  }
+
+  /* gira sozinho enquanto a capa estiver na tela; arrastar tambem gira */
+  var arr = false, mx = 0, my = 0, auto = true;
+  cv.addEventListener('mousedown', function(e){ arr = true; auto = false; mx = e.clientX; my = e.clientY; e.preventDefault(); });
+  window.addEventListener('mouseup', function(){ arr = false; });
+  window.addEventListener('mousemove', function(e){
+    if(!arr) return;
+    yaw += (e.clientX-mx)*0.01; pitch = Math.max(-1.1, Math.min(1.1, pitch + (e.clientY-my)*0.008));
+    mx = e.clientX; my = e.clientY;
+  });
+
+  (function laco(){
+    var sec = cv.closest('.slide');
+    if(sec && sec.classList.contains('active')){
+      if(auto) yaw += 0.0032;
+      desenha();
+    }
+    requestAnimationFrame(laco);
+  })();
+})();
+</script>
 
 <!-- ============ 01 · CAPA ============ -->
 <section class="slide cover">
