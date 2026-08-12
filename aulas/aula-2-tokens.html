@@ -213,11 +213,6 @@ body.notes-on .notes b{color:#ffc46b}
   font-size:12px;color:rgba(255,255,255,.38);letter-spacing:.4px;
 }
 
-.axbt{font:600 15px "Segoe UI",sans-serif;padding:5px 13px;border-radius:7px;
-  border:1px solid var(--line);background:#fff;color:var(--muted);cursor:pointer;transition:.15s}
-.axbt:hover{border-color:var(--accent);color:var(--accent)}
-.axbt.on{background:var(--primary);color:#fff;border-color:var(--primary)}
-
 /* ============ CAPA E ENCERRAMENTO (pôster) — mesmo padrão da Aula 01 ============
    Sem --poster-img aqui: esta aula não tem imagem gerada por IA, só a
    arte vetorial (grade/scan/vinheta) sobre o fundo escuro fósforo. */
@@ -767,172 +762,8 @@ body.notes-on .notes b{color:#ffc46b}
     <div class="punch"><p>Passou do limite, o começo da conversa — ou parte do documento — some. A IA responde como se nunca tivesse lido aquilo.</p></div>
   </div>
   <div class="brand">IA Generativa · Nivelamento <span class="autor">Maj Luiz Paulo</span></div><div class="pager"></div>
-  <div class="notes"><b>2 min.</b> Ligue com a Aula 01: é exatamente por isso que RAG existe — em vez de tentar colocar o manual inteiro na mesa, o sistema busca só os pedaços (chunks) relevantes e economiza espaço na janela de contexto.<br><br>O próximo slide mostra essa mesma "mesa cheia" acontecendo em 3D, ao vivo — segure a explicação de "o que acontece quando estoura" pra lá.</div>
+  <div class="notes"><b>2 min.</b> Ligue com a Aula 01: é exatamente por isso que RAG existe — em vez de tentar colocar o manual inteiro na mesa, o sistema busca só os pedaços (chunks) relevantes e economiza espaço na janela de contexto.<br><br>Insista na imagem da mesa cheia: quando estoura, o que sai de vista é o <b>começo</b> — as primeiras mensagens da conversa. A IA não avisa que esqueceu; ela só responde como se aquilo nunca tivesse sido dito.</div>
 </section>
-
-<!-- ============ 08B · JANELA DE CONTEXTO EM 3D ============ -->
-<section class="slide" style="padding-top:30px;padding-bottom:44px">
-  <h2><span class="num">Ver pra crer</span>A janela de contexto enchendo, em 3D</h2>
-  <div class="body" style="justify-content:space-between;gap:10px">
-    <div class="diagram">
-      <canvas id="janela3d" width="1560" height="760"
-        style="width:780px;height:380px;cursor:grab;border-radius:10px;background:#fdfcfa;border:1px solid var(--line);touch-action:none"></canvas>
-    </div>
-    <div style="display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap">
-      <button id="jnAdd" class="axbt" style="background:var(--primary);color:#fff;border-color:var(--primary)">▶ Adicionar 10 tokens</button>
-      <button id="jnReset" class="axbt">↺ Esvaziar</button>
-      <span id="jnStatus" class="sub" style="min-width:250px;font-weight:600"></span>
-    </div>
-  </div>
-  <div class="brand">IA Generativa · Nivelamento <span class="autor">Maj Luiz Paulo</span></div><div class="pager"></div>
-  <div class="notes"><b>3 min — deixe a turma clicar.</b> Arraste pra girar. Clique em "Adicionar 10 tokens" várias vezes seguidas: cada clique é um lote de uma cor. Quando a caixa enche, o próximo clique <b>estoura</b> — os tokens mais antigos (as primeiras cores que entraram) somem pra abrir espaço pros novos.<br><br>É a mesma "mesa cheia" do slide de contexto, só que agora dá pra ver acontecendo. A capacidade de 60 aqui é só pra caber bem no desenho — modelos reais variam de milhares a mais de um milhão de tokens de janela.<br><br>Se sobrar tempo, pergunte: "o que vocês acham que a IA faz quando isso acontece numa conversa de verdade?" Resposta: esquece o começo, exatamente como no desenho.</div>
-</section>
-
-<script>
-/* Janela de contexto em 3D: uma caixa de arame com 60 posições (grade
-   6x5x2). Cada clique em "Adicionar" preenche 10 posições com a cor do
-   lote. Quando a caixa enche, o clique seguinte remove as posições mais
-   antigas antes de adicionar as novas — o "estouro" da janela de
-   contexto, visível em vez de só explicado. IIFE própria, não toca em
-   nenhum outro slide. */
-(function(){
-  var cv = document.getElementById('janela3d');
-  if(!cv) return;
-  var ctx = cv.getContext('2d'), W = 780, H = 380;
-  ctx.scale(2, 2);
-
-  var GX = 6, GY = 5, GZ = 2, CAPACIDADE = GX*GY*GZ;
-  var LIMX = 1.5, LIMY = 1.25, LIMZ = 0.55;
-
-  var slots = [];
-  for(var i = 0; i < CAPACIDADE; i++) slots.push({ ocupado:false, cor:null });
-  var nivel = 0, lote = 0, flashT = 0;
-  var CORES = ['#098CDF', '#b45309', '#7e22ce'];
-
-  var yaw = -0.5, pitch = -0.28, ESC = 140, F = 4.6, CX = W/2, CY = H/2 + 8;
-  var arr = false, mx = 0, my = 0, auto = true;
-
-  function posGrade(idx){
-    var gx = idx % GX, gy = Math.floor(idx/GX) % GY, gz = Math.floor(idx/(GX*GY));
-    return {
-      x: (gx/(GX-1) - 0.5) * 2 * LIMX,
-      y: (gy/(GY-1) - 0.5) * 2 * LIMY,
-      z: (gz/(GZ-1) - 0.5) * 2 * LIMZ
-    };
-  }
-
-  function proj(x, y, z){
-    var cw = Math.cos(yaw), sw = Math.sin(yaw);
-    var X = x*cw - z*sw, Z = x*sw + z*cw;
-    var cp = Math.cos(pitch), sp = Math.sin(pitch);
-    var Y = y*cp - Z*sp; Z = y*sp + Z*cp;
-    var k = F/(F+Z);
-    return { x: CX + X*k*ESC, y: CY - Y*k*ESC, s: k, z: Z };
-  }
-
-  function verticesCaixa(){
-    var vs = [];
-    [-1,1].forEach(function(sx){ [-1,1].forEach(function(sy){ [-1,1].forEach(function(sz){
-      vs.push([sx*LIMX*1.1, sy*LIMY*1.1, sz*LIMZ*1.4]);
-    });});});
-    return vs;
-  }
-  var ARESTAS = [[0,1],[0,2],[0,4],[1,3],[1,5],[2,3],[2,6],[3,7],[4,5],[4,6],[5,7],[6,7]];
-
-  function desenha(){
-    ctx.clearRect(0, 0, W, H);
-    var vs = verticesCaixa().map(function(v){ return proj(v[0], v[1], v[2]); });
-
-    ctx.strokeStyle = flashT > 0 ? '#b91c1c' : '#9db4c6';
-    ctx.lineWidth = flashT > 0 ? 2.4 : 1.4;
-    ARESTAS.forEach(function(e){
-      ctx.beginPath(); ctx.moveTo(vs[e[0]].x, vs[e[0]].y); ctx.lineTo(vs[e[1]].x, vs[e[1]].y); ctx.stroke();
-    });
-
-    var pts = [];
-    for(var i = 0; i < CAPACIDADE; i++){
-      if(!slots[i].ocupado) continue;
-      var p = posGrade(i), q = proj(p.x, p.y, p.z);
-      q.cor = slots[i].cor;
-      pts.push(q);
-    }
-    pts.sort(function(a, b){ return b.z - a.z; });
-    pts.forEach(function(q){
-      var r = 11 * q.s;
-      ctx.fillStyle = q.cor;
-      ctx.globalAlpha = 0.85;
-      ctx.fillRect(q.x - r/2, q.y - r/2, r, r);
-    });
-    ctx.globalAlpha = 1;
-
-    if(flashT > 0){
-      ctx.font = '700 15px "Segoe UI",sans-serif'; ctx.fillStyle = '#b91c1c'; ctx.textAlign = 'center';
-      ctx.fillText('estourou — os tokens mais antigos saíram', W/2, 22);
-    }
-  }
-
-  function status(){
-    var el = document.getElementById('jnStatus');
-    if(el) el.textContent = nivel + ' / ' + CAPACIDADE + ' tokens (ilustrativo)';
-  }
-
-  document.getElementById('jnAdd').addEventListener('click', function(){
-    var cor = CORES[lote % CORES.length]; lote++;
-    var novos = 10;
-    if(nivel + novos > CAPACIDADE){
-      var remover = (nivel + novos) - CAPACIDADE;
-      var removidos = 0, i = 0;
-      while(removidos < remover && i < CAPACIDADE){
-        if(slots[i].ocupado){ slots[i].ocupado = false; slots[i].cor = null; removidos++; }
-        i++;
-      }
-      nivel -= removidos;
-      flashT = 1;
-      setTimeout(function(){ flashT = 0; }, 900);
-    }
-    var add = Math.min(novos, CAPACIDADE - nivel);
-    var colocados = 0, j = 0;
-    while(colocados < add && j < CAPACIDADE){
-      if(!slots[j].ocupado){ slots[j].ocupado = true; slots[j].cor = cor; colocados++; }
-      j++;
-    }
-    nivel += colocados;
-    status();
-  });
-
-  document.getElementById('jnReset').addEventListener('click', function(){
-    slots.forEach(function(s){ s.ocupado = false; s.cor = null; });
-    nivel = 0; lote = 0; flashT = 0;
-    status();
-  });
-
-  cv.addEventListener('mousedown', function(e){ arr = true; auto = false; mx = e.clientX; my = e.clientY; cv.style.cursor = 'grabbing'; e.preventDefault(); });
-  window.addEventListener('mouseup', function(){ arr = false; cv.style.cursor = 'grab'; });
-  window.addEventListener('mousemove', function(e){
-    if(!arr) return;
-    yaw += (e.clientX-mx)*0.008; pitch = Math.max(-1.1, Math.min(1.1, pitch + (e.clientY-my)*0.006));
-    mx = e.clientX; my = e.clientY;
-  });
-  cv.addEventListener('touchstart', function(e){ arr = true; auto = false; mx = e.touches[0].clientX; my = e.touches[0].clientY; }, {passive:true});
-  cv.addEventListener('touchend', function(){ arr = false; }, {passive:true});
-  cv.addEventListener('touchmove', function(e){
-    if(!arr) return;
-    yaw += (e.touches[0].clientX-mx)*0.008; pitch = Math.max(-1.1, Math.min(1.1, pitch + (e.touches[0].clientY-my)*0.006));
-    mx = e.touches[0].clientX; my = e.touches[0].clientY;
-  }, {passive:true});
-
-  (function laco(){
-    var sec = cv.closest('.slide');
-    if(sec && sec.classList.contains('active')){
-      if(auto && !arr) yaw += 0.0018;
-      desenha();
-    }
-    requestAnimationFrame(laco);
-  })();
-
-  status();
-})();
-</script>
 
 <!-- ============ 10B · QUANTO CABE ============ -->
 <section class="slide">
@@ -1001,10 +832,39 @@ body.notes-on .notes b{color:#ffc46b}
       <div class="card"><h3>Chunk pequeno demais</h3><p>Perde contexto: a resposta fica sem o parágrafo vizinho que dava sentido ao trecho.</p></div>
       <div class="card accent"><h3>Chunk grande demais</h3><p>Gasta janela de contexto e custo à toa com texto que a pergunta nem precisava.</p></div>
     </div>
-    <div class="punch"><p>Agora que você sabe o que é token, "quantos chunks cabem no prompt" vira uma conta — não um chute.</p></div>
+    <div class="punch"><p>Agora que você sabe o que é token, "quantos chunks cabem no prompt" vira uma conta — não um chute. <strong>A conta está no próximo slide.</strong></p></div>
   </div>
   <div class="brand">IA Generativa · Nivelamento <span class="autor">Maj Luiz Paulo</span></div><div class="pager"></div>
-  <div class="notes"><b>2 min — fecha o laço com a Aula 01.</b> Se a turma já viu RAG, esse é o momento "ahá": o chunking nunca foi arbitrário, é sempre uma conta de tokens por trás. Se ainda não viu, deixe como um gancho pra aula seguinte.</div>
+  <div class="notes"><b>2 min — fecha o laço com a Aula 01.</b> Se a turma já viu RAG, esse é o momento "ahá": o chunking nunca foi arbitrário, é sempre uma conta de tokens por trás. Se ainda não viu, deixe como um gancho pra aula seguinte.<br><br>Não tente explicar a conta aqui — ela vem inteira no slide seguinte, com os números na tela.</div>
+</section>
+
+<!-- ============ 12B · A CONTA ============ -->
+<section class="slide" style="padding-top:36px">
+  <h2><span class="num">A conta, com números</span>Quantos trechos cabem no prompt?</h2>
+  <div class="body" style="gap:14px">
+    <p class="lead" style="font-size:21px">Exemplo com números redondos, num modelo de janela pequena:</p>
+
+    <div style="background:#fff;border:1px solid var(--line);border-radius:11px;padding:16px 26px;box-shadow:var(--sombra);font-family:Consolas,monospace;font-size:19px;line-height:1.85">
+      <div style="display:flex;justify-content:space-between"><span>Janela de contexto do modelo</span><strong style="color:var(--primary-ink)">8.000</strong></div>
+      <div style="border-top:1px solid var(--line);margin:7px 0"></div>
+      <div style="display:flex;justify-content:space-between"><span>− instruções do sistema</span><span style="color:#b91c1c">− 200</span></div>
+      <div style="display:flex;justify-content:space-between"><span>− a pergunta do usuário</span><span style="color:#b91c1c">− 30</span></div>
+      <div style="display:flex;justify-content:space-between"><span>− reserva para a resposta</span><span style="color:#b91c1c">− 800</span></div>
+      <div style="border-top:2px solid var(--ink);margin:7px 0"></div>
+      <div style="display:flex;justify-content:space-between"><span><strong>= sobra para os trechos</strong></span><strong style="color:var(--accent);font-size:22px">6.970</strong></div>
+    </div>
+
+    <div style="display:flex;align-items:center;justify-content:center;gap:18px;font-family:Consolas,monospace;font-size:21px;flex-wrap:wrap">
+      <span>6.970</span><span style="color:var(--muted)">÷</span>
+      <span>500 <span style="font-family:'Segoe UI',sans-serif;font-size:15px;color:var(--muted)">(tamanho do chunk)</span></span>
+      <span style="color:var(--muted)">=</span>
+      <strong style="color:var(--accent);font-size:26px">13 trechos</strong>
+    </div>
+
+    <div class="punch destaque"><p style="font-size:21px">Chunk de <strong>250</strong>? Cabem 27 — mais variedade, menos contexto em cada. Chunk de <strong>1.000</strong>? Cabem 6 — o contrário. <strong>É essa a decisão</strong>, e agora ela tem números.</p></div>
+  </div>
+  <div class="brand">IA Generativa · Nivelamento <span class="autor">Maj Luiz Paulo</span></div><div class="pager"></div>
+  <div class="notes"><b>3 min — o slide que fecha a aula inteira.</b> Faça a conta em voz alta, linha por linha, sem pressa. É aritmética de quarta série, e é exatamente esse o ponto: depois de entender token, dimensionar um RAG deixa de ser intuição e vira subtração.<br><br><b>A linha que ninguém lembra é a reserva para a resposta.</b> A janela é compartilhada entre o que entra e o que sai — se você encher os 8.000 de contexto, não sobra espaço pro modelo escrever nada. É o erro mais comum de quem monta o primeiro RAG.<br><br><b>No quadro âmbar,</b> mostre que os dois extremos são a mesma conta com outro divisor. Não existe tamanho "certo" de chunk no vácuo: existe o que cabe no seu orçamento e responde a sua pergunta.<br><br>Todos os números são ilustrativos e redondos de propósito — a intenção é a turma conseguir refazer a conta de cabeça, não decorar valores.</div>
 </section>
 
 <!-- ============ 13 · ENCERRAMENTO ============ -->
