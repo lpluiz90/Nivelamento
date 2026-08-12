@@ -8,9 +8,11 @@ rede): abre offline em qualquer navegador.
 
 ## Aulas
 
-1. [RAG e Extração Estruturada](aulas/aula-1-rag-extracao-estruturada.html) — publicada
-2. [Tokens](aulas/aula-2-tokens.html) — publicada
-3. [JSON](aulas/aula-3-json.html) — publicada
+1. [RAG e Extração Estruturada](aulas/aula-1-rag-extracao-estruturada.html)
+2. [Tokens](aulas/aula-2-tokens.html)
+3. [Vibe Coding](aulas/aula-3-vibecoding.html)
+4. [JSON](aulas/aula-4-json.html)
+5. [Markdown](aulas/aula-5-markdown.html)
 
 ## Estrutura
 
