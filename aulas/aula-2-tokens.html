@@ -596,18 +596,76 @@ body.notes-on .notes b{color:#ffc46b}
 </section>
 
 <!-- ============ 06 · POR QUE NÃO PALAVRAS ============ -->
-<section class="slide">
+<section class="slide" style="padding-top:38px">
   <h2><span class="num">Extremo 2</span>Por que não usar palavras inteiras?</h2>
-  <div class="body">
-    <p class="lead">O outro extremo também tem problema: <strong>palavras nunca acabam</strong> de aparecer.</p>
+  <div class="body" style="gap:14px">
+    <p class="lead" style="font-size:22px">Todo token precisa de um <strong>número fixo numa lista</strong>. Se a palavra não está na lista, não existe número pra ela — e a informação inteira se perde.</p>
+
     <div class="cols">
-      <div class="card"><h3>Vocabulário sem fim</h3><p>Nomes próprios, gírias, siglas novas, erros de digitação — uma lista fechada de "palavras conhecidas" vai sempre faltar alguma.</p></div>
-      <div class="card accent"><h3>A saída: pedaços reaproveitáveis</h3><p>Um vocabulário de <strong>subpalavras</strong> (tokens) monta qualquer palavra nova juntando pedaços já conhecidos — mesmo uma que o modelo nunca viu inteira.</p></div>
+      <div class="card">
+        <h3>✗ Se a lista fosse de palavras inteiras</h3>
+        <pre style="margin:8px 0;font-size:13.5px;padding:11px 13px;line-height:1.7">  ⋮
+48.290  operação
+48.291  brigada
+48.292  reconhecimento
+  ⋮      <i>(fim da lista)</i></pre>
+        <p style="font-size:17px;margin-top:8px"><strong>"Guaratinguetá"</strong> não está lá.</p>
+        <p style="font-family:Consolas,monospace;font-size:18px;color:#b91c1c;font-weight:700;margin-top:6px">→ &lt;desconhecido&gt;</p>
+        <p class="sub" style="font-size:16px;margin-top:6px">A palavra some inteira. O modelo recebe só "não sei o que é isto".</p>
+      </div>
+
+      <div class="card accent">
+        <h3>✓ Com uma lista de pedaços</h3>
+        <div style="display:flex;gap:6px;margin:12px 0 4px;font-family:Consolas,monospace;font-size:19px">
+          <span style="background:#dbeafe;padding:5px 11px;border-radius:5px">Guara</span><span style="background:#fef3c7;padding:5px 11px;border-radius:5px">tin</span><span style="background:#ddd6fe;padding:5px 11px;border-radius:5px">guetá</span>
+        </div>
+        <div style="display:flex;gap:6px;font-family:Consolas,monospace;font-size:15px;color:var(--muted)">
+          <span style="width:74px;text-align:center">1.204</span><span style="width:58px;text-align:center">887</span><span style="width:74px;text-align:center">12.910</span>
+        </div>
+        <p style="font-size:17px;margin-top:12px">Três pedaços que <strong>já estavam</strong> na lista.</p>
+        <p class="sub" style="font-size:16px;margin-top:6px">Nada se perde — e o modelo nunca tinha visto essa palavra inteira.</p>
+      </div>
     </div>
-    <div class="analogy"><span class="tag">Pense assim</span><p>É como montar qualquer palavra com um alfabeto de <strong>sílabas</strong> em vez de um dicionário fechado: sempre sobra uma combinação pra formar o que aparecer pela frente.</p></div>
+
+    <div class="punch destaque"><p style="font-size:22px">Não existe lista de <strong>palavras</strong> que cubra todo nome próprio, gíria, sigla nova e erro de digitação. Existe lista de <strong>pedaços</strong> que monta todos eles.</p></div>
   </div>
   <div class="brand">IA Generativa · Nivelamento <span class="autor">Maj Luiz Paulo</span></div><div class="pager"></div>
-  <div class="notes"><b>2 min.</b> Feche o raciocínio dos dois últimos slides: letra é fiel demais e lento; palavra inteira é rápido mas nunca cobre tudo. Token é o meio-termo que os dois slides anteriores estavam pedindo — funciona porque reaproveita pedaços em vez de decorar palavras inteiras.</div>
+  <div class="notes"><b>3 min — o slide que faltava explicar.</b> A chave é a primeira frase: token não é só "um pedaço", é <b>um pedaço que tem número numa lista fixa</b>. O modelo só sabe trabalhar com esses números.<br><br><b>Lado esquerdo.</b> Pergunte: "o que acontece se a palavra não estiver na lista?" A resposta é o pior caso possível — ela vira <code>&lt;desconhecido&gt;</code>, um número único que significa "não faço ideia". Toda a informação da palavra evapora: o modelo não sabe se era uma cidade, um nome ou um erro de digitação.<br><br><b>Lado direito.</b> A mesma palavra, montada com três pedaços que já existiam na lista. O modelo nunca viu "Guaratinguetá" inteira na vida — e ainda assim consegue lê-la, porque viu "Guara", "tin" e "guetá" em outras palavras.<br><br>Os números (1.204, 887, 12.910) são ilustrativos — servem só pra mostrar que cada pedaço tem seu identificador próprio.</div>
+</section>
+
+<!-- ============ 06A · A PROVA ============ -->
+<section class="slide">
+  <h2><span class="num">A prova</span>Quatro palavras, dois vocabulários</h2>
+  <div class="body">
+    <table>
+      <thead><tr><th style="width:34%">A palavra</th><th style="width:33%">Lista de palavras inteiras</th><th>Lista de pedaços</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>operação</strong><br><span class="sub" style="font-size:15px">comum</span></td>
+          <td class="good">✓ está na lista</td>
+          <td class="good">✓ 1 pedaço</td>
+        </tr>
+        <tr>
+          <td><strong>Guaratinguetá</strong><br><span class="sub" style="font-size:15px">nome próprio</span></td>
+          <td class="bad">✗ &lt;desconhecido&gt;</td>
+          <td class="mid">✓ 3 pedaços</td>
+        </tr>
+        <tr>
+          <td><strong>tokenizaçao</strong><br><span class="sub" style="font-size:15px">erro de digitação (sem o til)</span></td>
+          <td class="bad">✗ &lt;desconhecido&gt;</td>
+          <td class="mid">✓ 4 pedaços</td>
+        </tr>
+        <tr>
+          <td><strong>CCOMGEX</strong><br><span class="sub" style="font-size:15px">sigla que não existia no treino</span></td>
+          <td class="bad">✗ &lt;desconhecido&gt;</td>
+          <td class="mid">✓ 5 pedaços</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="punch"><p>Três das quatro <strong>desaparecem</strong> num vocabulário de palavras. Nenhuma desaparece num vocabulário de pedaços — só ficam mais compridas.</p></div>
+  </div>
+  <div class="brand">IA Generativa · Nivelamento <span class="autor">Maj Luiz Paulo</span></div><div class="pager"></div>
+  <div class="notes"><b>2 min.</b> Percorra linha a linha. A primeira é o caso fácil — palavra comum, os dois funcionam.<br><br>As três seguintes são a lição, e cada uma é um tipo diferente de problema real: <b>nome próprio</b> (existem milhões, nenhuma lista cobre), <b>erro de digitação</b> (infinitos, ninguém consegue prever), <b>sigla nova</b> (surge depois do modelo já estar treinado — e no meio militar isso é o tempo todo).<br><br>Feche com a coluna da direita: nenhuma delas quebra. O preço é ficarem mais compridas — mais pedaços, mais tokens, mais custo. É o mesmo motivo do slide de português vs. inglês: <b>o que é raro custa mais</b>.<br><br>Se perguntarem se hoje ainda existe <code>&lt;desconhecido&gt;</code> de verdade: nos tokenizadores modernos, praticamente não — justamente porque abandonaram o vocabulário de palavras inteiras. O quadro da esquerda é o problema que a subpalavra veio resolver.</div>
 </section>
 
 <!-- ============ 06B · O EQUILÍBRIO ============ -->
@@ -618,7 +676,7 @@ body.notes-on .notes b{color:#ffc46b}
       <thead><tr><th>Nível</th><th>Fila de passos</th><th>Vocabulário</th><th>Resultado</th></tr></thead>
       <tbody>
         <tr><td>Letra</td><td class="bad">enorme</td><td class="good">pequeno</td><td>fiel, mas lento e caro</td></tr>
-        <tr><td>Palavra inteira</td><td class="good">curta</td><td class="bad">infinito</td><td>rápido, mas nunca cobre tudo</td></tr>
+        <tr><td>Palavra inteira</td><td class="good">curta</td><td class="bad">infinito</td><td>rápido, mas o que falta vira <code>&lt;desconhecido&gt;</code></td></tr>
         <tr><td><strong>Subpalavra (token)</strong></td><td class="mid">média</td><td class="mid">gerenciável</td><td class="mid"><strong>o equilíbrio usado hoje</strong></td></tr>
       </tbody>
     </table>
