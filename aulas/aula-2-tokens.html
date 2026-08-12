@@ -209,6 +209,11 @@ body.notes-on .notes b{color:#ffc46b}
   font-size:12px;color:rgba(255,255,255,.38);letter-spacing:.4px;
 }
 
+.axbt{font:600 15px "Segoe UI",sans-serif;padding:5px 13px;border-radius:7px;
+  border:1px solid var(--line);background:#fff;color:var(--muted);cursor:pointer;transition:.15s}
+.axbt:hover{border-color:var(--accent);color:var(--accent)}
+.axbt.on{background:var(--primary);color:#fff;border-color:var(--primary)}
+
 /* ============ CAPA E ENCERRAMENTO (pôster) — mesmo padrão da Aula 01 ============
    Sem --poster-img aqui: esta aula não tem imagem gerada por IA, só a
    arte vetorial (grade/scan/vinheta) sobre o fundo escuro fósforo. */
@@ -358,6 +363,8 @@ body.notes-on .notes b{color:#ffc46b}
   </div>
 
   <div class="paineis">
+    <!-- prévia dos tokens girando em 3D — o que a aula explica de verdade -->
+    <canvas class="mini3d" id="capaTokens3d" width="612" height="460" aria-hidden="true"></canvas>
     <div class="hud">
       <h4>Assuntos da instrução</h4>
       <p>O que é um token</p>
@@ -379,6 +386,90 @@ body.notes-on .notes b{color:#ffc46b}
 
   <div class="notes"><b>Slide de abertura.</b> Deixe projetado enquanto a turma entra e se acomoda. Não há nada a explicar aqui — avance assim que for começar.</div>
 </section>
+
+<!-- Mini visualização 3D da capa: fragmentos de token girando no espaço —
+     cada um translada (órbita o centro, junto com o grupo) e também gira
+     sozinho no próprio eixo. Script isolado numa IIFE própria: não toca
+     em nenhum outro slide. -->
+<script>
+(function(){
+  var cv = document.getElementById('capaTokens3d');
+  if(!cv) return;
+  var ctx = cv.getContext('2d'), W = 306, H = 230;
+  ctx.scale(2, 2);
+
+  var FRAGS = [
+    { t:'to',   c:'#4fb3f0' }, { t:'ken',  c:'#4fb3f0' }, { t:'IA',   c:'#4fb3f0' },
+    { t:'sub',  c:'#4fb3f0' }, { t:'pala', c:'#f0a35a' }, { t:'vra',  c:'#f0a35a' },
+    { t:'RAG',  c:'#f0a35a' }, { t:'gen',  c:'#f0a35a' }, { t:'LLM',  c:'#b98ce8' },
+    { t:'emb',  c:'#b98ce8' }, { t:'ção',  c:'#b98ce8' }, { t:'#42',  c:'#b98ce8' }
+  ];
+  var PTS = FRAGS.map(function(f, i){
+    var a = (i / FRAGS.length) * Math.PI * 2;
+    var raio = 0.85 + (i % 3) * 0.28;
+    return {
+      x: Math.cos(a) * raio, y: (Math.sin(i*1.7)) * 0.62, z: Math.sin(a) * raio,
+      spin: Math.random() * 6.28, vel: 0.01 + Math.random() * 0.018,
+      t: f.t, c: f.c
+    };
+  });
+
+  var yaw = -0.5, pitch = -0.3, ESC = 56, F = 4.4, CX = W/2, CY = H/2;
+
+  function proj(x, y, z){
+    var cw = Math.cos(yaw), sw = Math.sin(yaw);
+    var X = x*cw - z*sw, Z = x*sw + z*cw;
+    var cp = Math.cos(pitch), sp = Math.sin(pitch);
+    var Y = y*cp - Z*sp; Z = y*sp + Z*cp;
+    var k = F/(F+Z);
+    return { x: CX + X*k*ESC, y: CY - Y*k*ESC, s: k, z: Z };
+  }
+
+  function desenha(){
+    ctx.clearRect(0, 0, W, H);
+    var qs = PTS.map(function(p){
+      var q = proj(p.x, p.y, p.z); q.p = p; return q;
+    }).sort(function(a, b){ return b.z - a.z; });   /* mais distante primeiro */
+
+    qs.forEach(function(q){
+      var p = q.p, s = q.s;
+      var lw = 30 * s, lh = 18 * s, r = 4 * s;
+      ctx.save();
+      ctx.translate(q.x, q.y);
+      ctx.rotate(p.spin);                            /* rotação própria */
+      ctx.globalAlpha = 0.45 + 0.5 * s;
+      ctx.fillStyle = p.c;
+      ctx.beginPath();
+      ctx.moveTo(-lw/2 + r, -lh/2);
+      ctx.arcTo( lw/2, -lh/2,  lw/2,  lh/2, r);
+      ctx.arcTo( lw/2,  lh/2, -lw/2,  lh/2, r);
+      ctx.arcTo(-lw/2,  lh/2, -lw/2, -lh/2, r);
+      ctx.arcTo(-lw/2, -lh/2,  lw/2, -lh/2, r);
+      ctx.closePath();
+      ctx.fill();
+      if(s > 0.72){                                  /* rótulo só quando legível */
+        ctx.rotate(-p.spin * 0.35);                   /* o texto acompanha bem menos: fica lível */
+        ctx.fillStyle = '#03070a';
+        ctx.font = '700 ' + (9.5*s).toFixed(1) + 'px "Segoe UI",sans-serif';
+        ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        ctx.fillText(p.t, 0, 0.5);
+      }
+      ctx.restore();
+    });
+    ctx.globalAlpha = 1;
+  }
+
+  (function laco(){
+    var sec = cv.closest('.slide');
+    if(sec && sec.classList.contains('active')){
+      yaw += 0.0038;                                  /* translação: o grupo orbita */
+      PTS.forEach(function(p){ p.spin += p.vel; });    /* rotação: cada um gira sozinho */
+      desenha();
+    }
+    requestAnimationFrame(laco);
+  })();
+})();
+</script>
 
 <!-- ============ 01 · ROTEIRO ============ -->
 <section class="slide">
@@ -418,6 +509,25 @@ body.notes-on .notes b{color:#ffc46b}
   <div class="notes"><b>2 min.</b> Este é o fundamento de tudo o que vem depois. Se a turma sair só com "a IA lê tokens, não palavras", o slide já valeu. Guarde a analogia do Lego — ela volta a aparecer, sem precisar repetir a explicação inteira.</div>
 </section>
 
+<!-- ============ 03B · DE ONDE VEM ============ -->
+<section class="slide">
+  <h2><span class="num">De onde vem isso</span>O vocabulário de tokens não é digitado à mão</h2>
+  <div class="body">
+    <p class="lead">Ele é <strong>aprendido</strong>: um programa lê uma quantidade enorme de texto e vai juntando, passo a passo, os pedaços que mais aparecem colados um no outro.</p>
+    <div class="cols-3">
+      <div class="card"><h3>1 · Começa em letras</h3><p style="font-family:Consolas,monospace;font-size:20px;text-align:center">t · o · k · e · n</p></div>
+      <div class="card accent"><h3>2 · Junta o par mais comum</h3><p style="font-family:Consolas,monospace;font-size:20px;text-align:center">to · k · e · n</p></div>
+      <div class="card"><h3>3 · Repete milhares de vezes</h3><p style="font-family:Consolas,monospace;font-size:20px;text-align:center">token</p></div>
+    </div>
+    <div class="analogy">
+      <span class="tag">O nome disso</span>
+      <p>É a técnica <strong>BPE</strong> (Byte Pair Encoding). Por isso palavras comuns viram <strong>1 token só</strong>, e palavras raras, estrangeiras ou digitadas errado quebram em vários pedaços: elas simplesmente apareceram pouco no texto usado para montar o vocabulário.</p>
+    </div>
+  </div>
+  <div class="brand">IA Generativa · Nivelamento <span class="autor">Maj Luiz Paulo</span></div><div class="pager"></div>
+  <div class="notes"><b>2 min.</b> Não precisa entrar em detalhe do algoritmo — o que importa fica nos três cartões: começa em letras, junta o par mais frequente, repete isso dezenas de milhares de vezes até sobrar um vocabulário de tamanho gerenciável.<br><br>A consequência prática que a turma precisa levar: o motivo de "token" virar 1 pedaço e "compreendendo" virar vários não é capricho — é estatística de quantas vezes cada combinação apareceu no texto de treino. Palavra rara = poucos exemplos = quebra mais.</div>
+</section>
+
 <!-- ============ 04 · EXEMPLO ============ -->
 <section class="slide" style="padding-top:38px">
   <h2><span class="num">Na prática</span>Uma frase, pedaço por pedaço</h2>
@@ -441,6 +551,20 @@ body.notes-on .notes b{color:#ffc46b}
   </div>
   <div class="brand">IA Generativa · Nivelamento <span class="autor">Maj Luiz Paulo</span></div><div class="pager"></div>
   <div class="notes"><b>3 min — o slide mais importante do bloco 1.</b> Deixe claro que essa divisão é ILUSTRATIVA: o número exato de tokens varia de ferramenta pra ferramenta e de modelo pra modelo. O que NÃO varia é o padrão: como os tokenizadores foram treinados majoritariamente em inglês, palavras em português — com acento, cedilha, conjugação verbal — tendem a quebrar em mais pedaços. Isso tem consequência prática: o MESMO texto em português consome mais do orçamento de tokens do que o mesmo texto em inglês.</div>
+</section>
+
+<!-- ============ 04B · PARÁGRAFO INTEIRO ============ -->
+<section class="slide" style="padding-top:40px">
+  <h2><span class="num">Em escala</span>Um parágrafo inteiro, do jeito que a IA vê</h2>
+  <div class="body" style="gap:16px">
+    <div style="background:#fff;border:1px solid var(--line);border-radius:12px;padding:20px 26px;font-size:19px;line-height:1.9;box-shadow:var(--sombra)">
+      <span style="background:#dbeafe;border-radius:4px">A</span><span style="background:#fef3c7;border-radius:4px"> Ordem</span><span style="background:#fecaca;border-radius:4px"> de</span><span style="background:#ddd6fe;border-radius:4px"> Opera</span><span style="background:#bbf7d0;border-radius:4px">ções</span><span style="background:#dbeafe;border-radius:4px"> do</span><span style="background:#fef3c7;border-radius:4px"> esca</span><span style="background:#fecaca;border-radius:4px">lão</span><span style="background:#ddd6fe;border-radius:4px"> superior</span><span style="background:#bbf7d0;border-radius:4px"> chega</span><span style="background:#dbeafe;border-radius:4px"> em</span><span style="background:#fef3c7;border-radius:4px"> PDF</span><span style="background:#fecaca;border-radius:4px">,</span><span style="background:#ddd6fe;border-radius:4px"> cheia</span><span style="background:#bbf7d0;border-radius:4px"> de</span><span style="background:#dbeafe;border-radius:4px"> cabeçal</span><span style="background:#fef3c7;border-radius:4px">ho</span><span style="background:#fecaca;border-radius:4px"> repet</span><span style="background:#ddd6fe;border-radius:4px">ido</span><span style="background:#bbf7d0;border-radius:4px"> e</span><span style="background:#dbeafe;border-radius:4px"> marca</span><span style="background:#fef3c7;border-radius:4px"> d'</span><span style="background:#fecaca;border-radius:4px">água</span><span style="background:#ddd6fe;border-radius:4px">,</span><span style="background:#bbf7d0;border-radius:4px"> e</span><span style="background:#dbeafe;border-radius:4px"> precisa</span><span style="background:#fef3c7;border-radius:4px"> ser</span><span style="background:#fecaca;border-radius:4px"> lida</span><span style="background:#ddd6fe;border-radius:4px"> com</span><span style="background:#bbf7d0;border-radius:4px"> atenção</span><span style="background:#dbeafe;border-radius:4px"> antes</span><span style="background:#fef3c7;border-radius:4px"> de</span><span style="background:#fecaca;border-radius:4px"> qualquer</span><span style="background:#ddd6fe;border-radius:4px"> extra</span><span style="background:#bbf7d0;border-radius:4px">ção</span><span style="background:#dbeafe;border-radius:4px">.</span>
+    </div>
+    <p class="sub" style="text-align:center">36 pedaços coloridos para 1 frase de 26 palavras — cada cor nova é <strong>um token</strong>. Repare que os espaços viajam grudados no pedaço <em>seguinte</em>, não no anterior.</p>
+    <div class="punch"><p>É exatamente assim que ferramentas reais de contagem mostram o texto — cores alternadas, sem respeitar as palavras.</p></div>
+  </div>
+  <div class="brand">IA Generativa · Nivelamento <span class="autor">Maj Luiz Paulo</span></div><div class="pager"></div>
+  <div class="notes"><b>2,5 min.</b> Deixe a turma tentar contar as cores antes de você revelar o número — o objetivo é sentir a escala: um parágrafo curto já passa de 30 tokens.<br><br>Chame atenção pro detalhe do espaço: em "Opera" + "ções", "cabeçal" + "ho", "extra" + "ção" — são palavras comuns (Operações, cabeçalho, extração) quebradas porque, junto com o sufixo, formam uma combinação menos frequente que a raiz sozinha. É o mesmo mecanismo do slide anterior (BPE), agora numa frase inteira em vez de uma palavra isolada.<br><br>Divisão ilustrativa, como sempre — mas o formato (blocos de cor colados, sem respeitar espaço) é fiel ao que ferramentas reais mostram.</div>
 </section>
 
 <!-- ============ 05 · POR QUE NÃO LETRAS ============ -->
@@ -471,6 +595,24 @@ body.notes-on .notes b{color:#ffc46b}
   </div>
   <div class="brand">IA Generativa · Nivelamento <span class="autor">Maj Luiz Paulo</span></div><div class="pager"></div>
   <div class="notes"><b>2 min.</b> Feche o raciocínio dos dois últimos slides: letra é fiel demais e lento; palavra inteira é rápido mas nunca cobre tudo. Token é o meio-termo que os dois slides anteriores estavam pedindo — funciona porque reaproveita pedaços em vez de decorar palavras inteiras.</div>
+</section>
+
+<!-- ============ 06B · O EQUILÍBRIO ============ -->
+<section class="slide">
+  <h2><span class="num">Fechando o raciocínio</span>Os três níveis, lado a lado</h2>
+  <div class="body">
+    <table>
+      <thead><tr><th>Nível</th><th>Fila de passos</th><th>Vocabulário</th><th>Resultado</th></tr></thead>
+      <tbody>
+        <tr><td>Letra</td><td class="bad">enorme</td><td class="good">pequeno</td><td>fiel, mas lento e caro</td></tr>
+        <tr><td>Palavra inteira</td><td class="good">curta</td><td class="bad">infinito</td><td>rápido, mas nunca cobre tudo</td></tr>
+        <tr><td><strong>Subpalavra (token)</strong></td><td class="mid">média</td><td class="mid">gerenciável</td><td class="mid"><strong>o equilíbrio usado hoje</strong></td></tr>
+      </tbody>
+    </table>
+    <div class="punch destaque"><p>Token não é a solução perfeita — é a <strong>melhor troca possível</strong> entre os dois extremos que os slides anteriores mostraram.</p></div>
+  </div>
+  <div class="brand">IA Generativa · Nivelamento <span class="autor">Maj Luiz Paulo</span></div><div class="pager"></div>
+  <div class="notes"><b>1,5 min — fecho do Bloco 1.</b> Este slide é só a síntese visual dos três anteriores numa tabela só. Se alguém perguntar "por que não usam um nível melhor ainda?" — a resposta honesta é que este é o equilíbrio que a área encontrou até agora, não uma lei da natureza. Pesquisa em tokenização continua evoluindo.</div>
 </section>
 
 <!-- ============ 07 · BLOCO 2 ============ -->
@@ -519,6 +661,170 @@ body.notes-on .notes b{color:#ffc46b}
   <div class="notes"><b>2 min.</b> Ponto importante: o histórico da conversa conta como entrada A CADA mensagem nova. Numa conversa longa, você está pagando de novo pelos tokens das mensagens anteriores toda vez que manda uma nova pergunta — não é só a última linha que é cobrada.<br><br>O exemplo do diagrama usa 1 palavra = 1 token só pra deixar o fluxo entrada→modelo→saída visível de longe; a divisão real em subpalavras já foi mostrada no slide anterior.</div>
 </section>
 
+<!-- ============ 08B · JANELA DE CONTEXTO EM 3D ============ -->
+<section class="slide" style="padding-top:30px;padding-bottom:44px">
+  <h2><span class="num">Ver pra crer</span>A janela de contexto enchendo, em 3D</h2>
+  <div class="body" style="justify-content:space-between;gap:10px">
+    <div class="diagram">
+      <canvas id="janela3d" width="1560" height="760"
+        style="width:780px;height:380px;cursor:grab;border-radius:10px;background:#fdfcfa;border:1px solid var(--line);touch-action:none"></canvas>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap">
+      <button id="jnAdd" class="axbt" style="background:var(--primary);color:#fff;border-color:var(--primary)">▶ Adicionar 10 tokens</button>
+      <button id="jnReset" class="axbt">↺ Esvaziar</button>
+      <span id="jnStatus" class="sub" style="min-width:250px;font-weight:600"></span>
+    </div>
+  </div>
+  <div class="brand">IA Generativa · Nivelamento <span class="autor">Maj Luiz Paulo</span></div><div class="pager"></div>
+  <div class="notes"><b>3 min — deixe a turma clicar.</b> Arraste pra girar. Clique em "Adicionar 10 tokens" várias vezes seguidas: cada clique é um lote de uma cor. Quando a caixa enche, o próximo clique <b>estoura</b> — os tokens mais antigos (as primeiras cores que entraram) somem pra abrir espaço pros novos.<br><br>É a mesma "mesa cheia" do slide de contexto, só que agora dá pra ver acontecendo. A capacidade de 60 aqui é só pra caber bem no desenho — modelos reais variam de milhares a mais de um milhão de tokens de janela.<br><br>Se sobrar tempo, pergunte: "o que vocês acham que a IA faz quando isso acontece numa conversa de verdade?" Resposta: esquece o começo, exatamente como no desenho.</div>
+</section>
+
+<script>
+/* Janela de contexto em 3D: uma caixa de arame com 60 posições (grade
+   6x5x2). Cada clique em "Adicionar" preenche 10 posições com a cor do
+   lote. Quando a caixa enche, o clique seguinte remove as posições mais
+   antigas antes de adicionar as novas — o "estouro" da janela de
+   contexto, visível em vez de só explicado. IIFE própria, não toca em
+   nenhum outro slide. */
+(function(){
+  var cv = document.getElementById('janela3d');
+  if(!cv) return;
+  var ctx = cv.getContext('2d'), W = 780, H = 380;
+  ctx.scale(2, 2);
+
+  var GX = 6, GY = 5, GZ = 2, CAPACIDADE = GX*GY*GZ;
+  var LIMX = 1.5, LIMY = 1.25, LIMZ = 0.55;
+
+  var slots = [];
+  for(var i = 0; i < CAPACIDADE; i++) slots.push({ ocupado:false, cor:null });
+  var nivel = 0, lote = 0, flashT = 0;
+  var CORES = ['#098CDF', '#b45309', '#7e22ce'];
+
+  var yaw = -0.5, pitch = -0.28, ESC = 140, F = 4.6, CX = W/2, CY = H/2 + 8;
+  var arr = false, mx = 0, my = 0, auto = true;
+
+  function posGrade(idx){
+    var gx = idx % GX, gy = Math.floor(idx/GX) % GY, gz = Math.floor(idx/(GX*GY));
+    return {
+      x: (gx/(GX-1) - 0.5) * 2 * LIMX,
+      y: (gy/(GY-1) - 0.5) * 2 * LIMY,
+      z: (gz/(GZ-1) - 0.5) * 2 * LIMZ
+    };
+  }
+
+  function proj(x, y, z){
+    var cw = Math.cos(yaw), sw = Math.sin(yaw);
+    var X = x*cw - z*sw, Z = x*sw + z*cw;
+    var cp = Math.cos(pitch), sp = Math.sin(pitch);
+    var Y = y*cp - Z*sp; Z = y*sp + Z*cp;
+    var k = F/(F+Z);
+    return { x: CX + X*k*ESC, y: CY - Y*k*ESC, s: k, z: Z };
+  }
+
+  function verticesCaixa(){
+    var vs = [];
+    [-1,1].forEach(function(sx){ [-1,1].forEach(function(sy){ [-1,1].forEach(function(sz){
+      vs.push([sx*LIMX*1.1, sy*LIMY*1.1, sz*LIMZ*1.4]);
+    });});});
+    return vs;
+  }
+  var ARESTAS = [[0,1],[0,2],[0,4],[1,3],[1,5],[2,3],[2,6],[3,7],[4,5],[4,6],[5,7],[6,7]];
+
+  function desenha(){
+    ctx.clearRect(0, 0, W, H);
+    var vs = verticesCaixa().map(function(v){ return proj(v[0], v[1], v[2]); });
+
+    ctx.strokeStyle = flashT > 0 ? '#b91c1c' : '#9db4c6';
+    ctx.lineWidth = flashT > 0 ? 2.4 : 1.4;
+    ARESTAS.forEach(function(e){
+      ctx.beginPath(); ctx.moveTo(vs[e[0]].x, vs[e[0]].y); ctx.lineTo(vs[e[1]].x, vs[e[1]].y); ctx.stroke();
+    });
+
+    var pts = [];
+    for(var i = 0; i < CAPACIDADE; i++){
+      if(!slots[i].ocupado) continue;
+      var p = posGrade(i), q = proj(p.x, p.y, p.z);
+      q.cor = slots[i].cor;
+      pts.push(q);
+    }
+    pts.sort(function(a, b){ return b.z - a.z; });
+    pts.forEach(function(q){
+      var r = 11 * q.s;
+      ctx.fillStyle = q.cor;
+      ctx.globalAlpha = 0.85;
+      ctx.fillRect(q.x - r/2, q.y - r/2, r, r);
+    });
+    ctx.globalAlpha = 1;
+
+    if(flashT > 0){
+      ctx.font = '700 15px "Segoe UI",sans-serif'; ctx.fillStyle = '#b91c1c'; ctx.textAlign = 'center';
+      ctx.fillText('estourou — os tokens mais antigos saíram', W/2, 22);
+    }
+  }
+
+  function status(){
+    var el = document.getElementById('jnStatus');
+    if(el) el.textContent = nivel + ' / ' + CAPACIDADE + ' tokens (ilustrativo)';
+  }
+
+  document.getElementById('jnAdd').addEventListener('click', function(){
+    var cor = CORES[lote % CORES.length]; lote++;
+    var novos = 10;
+    if(nivel + novos > CAPACIDADE){
+      var remover = (nivel + novos) - CAPACIDADE;
+      var removidos = 0, i = 0;
+      while(removidos < remover && i < CAPACIDADE){
+        if(slots[i].ocupado){ slots[i].ocupado = false; slots[i].cor = null; removidos++; }
+        i++;
+      }
+      nivel -= removidos;
+      flashT = 1;
+      setTimeout(function(){ flashT = 0; }, 900);
+    }
+    var add = Math.min(novos, CAPACIDADE - nivel);
+    var colocados = 0, j = 0;
+    while(colocados < add && j < CAPACIDADE){
+      if(!slots[j].ocupado){ slots[j].ocupado = true; slots[j].cor = cor; colocados++; }
+      j++;
+    }
+    nivel += colocados;
+    status();
+  });
+
+  document.getElementById('jnReset').addEventListener('click', function(){
+    slots.forEach(function(s){ s.ocupado = false; s.cor = null; });
+    nivel = 0; lote = 0; flashT = 0;
+    status();
+  });
+
+  cv.addEventListener('mousedown', function(e){ arr = true; auto = false; mx = e.clientX; my = e.clientY; cv.style.cursor = 'grabbing'; e.preventDefault(); });
+  window.addEventListener('mouseup', function(){ arr = false; cv.style.cursor = 'grab'; });
+  window.addEventListener('mousemove', function(e){
+    if(!arr) return;
+    yaw += (e.clientX-mx)*0.008; pitch = Math.max(-1.1, Math.min(1.1, pitch + (e.clientY-my)*0.006));
+    mx = e.clientX; my = e.clientY;
+  });
+  cv.addEventListener('touchstart', function(e){ arr = true; auto = false; mx = e.touches[0].clientX; my = e.touches[0].clientY; }, {passive:true});
+  cv.addEventListener('touchend', function(){ arr = false; }, {passive:true});
+  cv.addEventListener('touchmove', function(e){
+    if(!arr) return;
+    yaw += (e.touches[0].clientX-mx)*0.008; pitch = Math.max(-1.1, Math.min(1.1, pitch + (e.touches[0].clientY-my)*0.006));
+    mx = e.touches[0].clientX; my = e.touches[0].clientY;
+  }, {passive:true});
+
+  (function laco(){
+    var sec = cv.closest('.slide');
+    if(sec && sec.classList.contains('active')){
+      if(auto && !arr) yaw += 0.0018;
+      desenha();
+    }
+    requestAnimationFrame(laco);
+  })();
+
+  status();
+})();
+</script>
+
 <!-- ============ 09 · REGRA PRÁTICA ============ -->
 <section class="slide">
   <h2><span class="num">Régua rápida</span>Quanto é um token, na prática?</h2>
@@ -557,6 +863,26 @@ body.notes-on .notes b{color:#ffc46b}
   <div class="notes"><b>2 min.</b> Ligue com a Aula 01: é exatamente por isso que RAG existe — em vez de tentar colocar o manual inteiro na mesa, o sistema busca só os pedaços (chunks) relevantes e economiza espaço na janela de contexto.</div>
 </section>
 
+<!-- ============ 10B · QUANTO CABE ============ -->
+<section class="slide">
+  <h2><span class="num">Traduzindo o número</span>Quanto cabe numa janela de contexto?</h2>
+  <div class="body">
+    <p class="lead">"Tokens" é abstrato. Convertendo pela régua do slide anterior (~0,75 palavra por token, ~500 palavras por página), fica mais fácil sentir o tamanho.</p>
+    <table>
+      <thead><tr><th>Janela</th><th>Tokens</th><th>≈ Palavras</th><th>≈ Páginas</th></tr></thead>
+      <tbody>
+        <tr><td>Pequena</td><td>8 mil</td><td>6 mil</td><td class="mid">~12</td></tr>
+        <tr><td>Média</td><td>32 mil</td><td>24 mil</td><td class="mid">~48</td></tr>
+        <tr><td>Grande</td><td>128 mil</td><td>96 mil</td><td class="mid">~190</td></tr>
+      </tbody>
+    </table>
+    <p class="sub" style="text-align:center">Números redondos, só para dar ordem de grandeza — cada serviço anuncia sua própria janela, e ela muda com frequência.</p>
+    <div class="punch destaque"><p>Mesmo a janela "grande" tem fim. Um acervo de <strong>milhares</strong> de páginas nunca cabe inteiro — é exatamente aí que entra o RAG da Aula 01.</p></div>
+  </div>
+  <div class="brand">IA Generativa · Nivelamento <span class="autor">Maj Luiz Paulo</span></div><div class="pager"></div>
+  <div class="notes"><b>1,5 min.</b> Não cite o nome de um serviço específico nem prometa um número exato de janela — isso muda o tempo todo e envelheceria o slide rápido. A tabela é só pra dar intuição de escala: mesmo a categoria "grande" (~190 páginas) é pouca coisa perto de um acervo documental de verdade.<br><br>Feche apontando pra frente: é exatamente esse limite que faz o RAG (Aula 01) valer a pena — em vez de tentar colocar tudo na janela, busca-se só o pedaço relevante.</div>
+</section>
+
 <!-- ============ 11 · CUSTO ============ -->
 <section class="slide">
   <h2><span class="num">Por que importa · 2</span>A conta a pagar</h2>
@@ -577,6 +903,22 @@ body.notes-on .notes b{color:#ffc46b}
   </div>
   <div class="brand">IA Generativa · Nivelamento <span class="autor">Maj Luiz Paulo</span></div><div class="pager"></div>
   <div class="notes"><b>2 min.</b> Não cite valores em reais ou dólares — preço de token muda com frequência e qualquer número fixo aqui ficaria desatualizado rápido. O que é estável é o PADRÃO: cobrança por milhão de tokens, saída mais cara que entrada, e histórico de conversa que se acumula. Se der tempo, abra o pricepertoken.com ao vivo e mostre a turma comparando dois ou três modelos.</div>
+</section>
+
+<!-- ============ 11B · ONDE SE ESCONDEM ============ -->
+<section class="slide">
+  <h2><span class="num">Consequência prática</span>Onde os tokens se escondem</h2>
+  <div class="body">
+    <p class="lead">Nem todo token vem da sua pergunta. Vários entram sem você digitar nada.</p>
+    <div class="cols-3">
+      <div class="card"><h3>Instruções do sistema</h3><p>Toda ferramenta manda, nos bastidores, um bloco de regras antes da sua mensagem — e ele é cobrado junto.</p></div>
+      <div class="card accent"><h3>Histórico da conversa</h3><p>Cada mensagem anterior volta inteira a cada nova pergunta. Uma conversa longa carrega tudo de novo, sempre.</p></div>
+      <div class="card"><h3>Trechos recuperados (RAG)</h3><p>Os chunks que a busca vetorial da Aula 01 traz entram no prompt como texto — e contam como qualquer outro token.</p></div>
+    </div>
+    <div class="punch"><p>Uma conversa "gasta" muito antes de você perceber. Começar de novo, de vez em quando, também é economia.</p></div>
+  </div>
+  <div class="brand">IA Generativa · Nivelamento <span class="autor">Maj Luiz Paulo</span></div><div class="pager"></div>
+  <div class="notes"><b>2 min.</b> Este slide é o mais "prático" da aula — o que fazer com a teoria toda. Três fontes de token invisível: prompt de sistema (a turma nunca vê, mas paga), histórico acumulado (quanto mais longa a conversa, mais caro cada mensagem nova), e contexto recuperado por RAG (liga direto com a Aula 01 — os chunks recuperados entram como texto puro no prompt).<br><br>Dica que costuma render pergunta: "abrir uma conversa nova de vez em quando é mais barato que continuar uma gigante?" Sim, quase sempre — o histórico que se acumula é reenviado (e recobrado) a cada mensagem.</div>
 </section>
 
 <!-- ============ 12 · LIGANDO COM A AULA 01 ============ -->
