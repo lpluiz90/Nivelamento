@@ -591,38 +591,38 @@ body.notes-on .notes b{color:#ffc46b}
 </section>
 
 <!-- ============ 06 · POR QUE NÃO PALAVRAS ============ -->
-<section class="slide" style="padding-top:38px">
+<section class="slide" style="padding-top:30px">
   <h2><span class="num">Extremo 2</span>Por que não usar palavras inteiras?</h2>
-  <div class="body" style="gap:14px">
-    <p class="lead" style="font-size:22px">Todo token precisa de um <strong>número fixo numa lista</strong>. Se a palavra não está na lista, não existe número pra ela — e a informação inteira se perde.</p>
+  <div class="body" style="gap:12px">
+    <p class="lead" style="font-size:20px">Todo token precisa de um <strong>número fixo numa lista</strong>. Palavra fora da lista não tem número — e se perde inteira.</p>
 
     <div class="cols">
-      <div class="card">
+      <div class="card" style="padding:16px 20px">
         <h3>✗ Se a lista fosse de palavras inteiras</h3>
-        <pre style="margin:8px 0;font-size:13.5px;padding:11px 13px;line-height:1.7">  ⋮
+        <pre style="margin:6px 0;font-size:13px;padding:9px 12px;line-height:1.55">  ⋮
 48.290  operação
 48.291  brigada
 48.292  reconhecimento
   ⋮      <i>(fim da lista)</i></pre>
-        <p style="font-size:17px;margin-top:8px"><strong>"Guaratinguetá"</strong> não está lá.</p>
-        <p style="font-family:Consolas,monospace;font-size:18px;color:#b91c1c;font-weight:700;margin-top:6px">→ &lt;desconhecido&gt;</p>
-        <p class="sub" style="font-size:16px;margin-top:6px">A palavra some inteira. O modelo recebe só "não sei o que é isto".</p>
+        <p style="font-size:16px;margin-top:6px"><strong>"Guaratinguetá"</strong> não está lá.</p>
+        <p style="font-family:Consolas,monospace;font-size:17px;color:#b91c1c;font-weight:700;margin-top:5px">→ &lt;desconhecido&gt;</p>
+        <p class="sub" style="font-size:15px;margin-top:5px">A palavra some inteira. O modelo recebe só "não sei o que é isto".</p>
       </div>
 
-      <div class="card accent">
+      <div class="card accent" style="padding:16px 20px">
         <h3>✓ Com uma lista de pedaços</h3>
-        <div style="display:flex;gap:6px;margin:12px 0 4px;font-family:Consolas,monospace;font-size:19px">
-          <span style="background:#dbeafe;padding:5px 11px;border-radius:5px">Guara</span><span style="background:#fef3c7;padding:5px 11px;border-radius:5px">tin</span><span style="background:#ddd6fe;padding:5px 11px;border-radius:5px">guetá</span>
+        <div style="display:flex;gap:6px;margin:10px 0 4px;font-family:Consolas,monospace;font-size:18px">
+          <span style="background:#dbeafe;padding:4px 10px;border-radius:5px">Guara</span><span style="background:#fef3c7;padding:4px 10px;border-radius:5px">tin</span><span style="background:#ddd6fe;padding:4px 10px;border-radius:5px">guetá</span>
         </div>
-        <div style="display:flex;gap:6px;font-family:Consolas,monospace;font-size:15px;color:var(--muted)">
-          <span style="width:74px;text-align:center">1.204</span><span style="width:58px;text-align:center">887</span><span style="width:74px;text-align:center">12.910</span>
+        <div style="display:flex;gap:6px;font-family:Consolas,monospace;font-size:14px;color:var(--muted)">
+          <span style="width:70px;text-align:center">1.204</span><span style="width:54px;text-align:center">887</span><span style="width:70px;text-align:center">12.910</span>
         </div>
-        <p style="font-size:17px;margin-top:12px">Três pedaços que <strong>já estavam</strong> na lista.</p>
-        <p class="sub" style="font-size:16px;margin-top:6px">Nada se perde — e o modelo nunca tinha visto essa palavra inteira.</p>
+        <p style="font-size:16px;margin-top:10px">Três pedaços que <strong>já estavam</strong> na lista.</p>
+        <p class="sub" style="font-size:15px;margin-top:5px">Nada se perde — e o modelo nunca tinha visto essa palavra inteira.</p>
       </div>
     </div>
 
-    <div class="punch destaque"><p style="font-size:22px">Não existe lista de <strong>palavras</strong> que cubra todo nome próprio, gíria, sigla nova e erro de digitação. Existe lista de <strong>pedaços</strong> que monta todos eles.</p></div>
+    <div class="punch destaque"><p style="font-size:20px">Não existe lista de <strong>palavras</strong> que cubra todo nome próprio, gíria, sigla nova e erro de digitação. Existe lista de <strong>pedaços</strong> que monta todos eles.</p></div>
   </div>
   <div class="brand">IA Generativa · Nivelamento <span class="autor">Maj Luiz Paulo</span></div><div class="pager"></div>
   <div class="notes"><b>3 min — o slide que faltava explicar.</b> A chave é a primeira frase: token não é só "um pedaço", é <b>um pedaço que tem número numa lista fixa</b>. O modelo só sabe trabalhar com esses números.<br><br><b>Lado esquerdo.</b> Pergunte: "o que acontece se a palavra não estiver na lista?" A resposta é o pior caso possível — ela vira <code>&lt;desconhecido&gt;</code>, um número único que significa "não faço ideia". Toda a informação da palavra evapora: o modelo não sabe se era uma cidade, um nome ou um erro de digitação.<br><br><b>Lado direito.</b> A mesma palavra, montada com três pedaços que já existiam na lista. O modelo nunca viu "Guaratinguetá" inteira na vida — e ainda assim consegue lê-la, porque viu "Guara", "tin" e "guetá" em outras palavras.<br><br>Os números (1.204, 887, 12.910) são ilustrativos — servem só pra mostrar que cada pedaço tem seu identificador próprio.</div>
@@ -766,10 +766,10 @@ body.notes-on .notes b{color:#ffc46b}
 </section>
 
 <!-- ============ 10B · QUANTO CABE ============ -->
-<section class="slide">
+<section class="slide" style="padding-top:44px">
   <h2><span class="num">Traduzindo o número</span>Quanto cabe numa janela de contexto?</h2>
-  <div class="body">
-    <p class="lead">"Tokens" é abstrato. Convertendo pela régua do slide anterior (~0,75 palavra por token, ~500 palavras por página), fica mais fácil sentir o tamanho.</p>
+  <div class="body" style="gap:16px">
+    <p class="lead" style="font-size:21px">"Tokens" é abstrato. Convertendo pela régua do slide anterior (~0,75 palavra por token, ~500 palavras por página), fica mais fácil sentir o tamanho.</p>
     <table>
       <thead><tr><th>Janela</th><th>Tokens</th><th>≈ Palavras</th><th>≈ Páginas</th></tr></thead>
       <tbody>

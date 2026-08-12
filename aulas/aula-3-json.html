@@ -410,10 +410,10 @@ body.notes-on .notes b{color:#ffc46b}
 </section>
 
 <!-- ============ 01 · ROTEIRO ============ -->
-<section class="slide">
+<section class="slide" style="padding-top:44px">
   <h2><span class="num">Antes de começar</span>Roteiro desta aula</h2>
-  <div class="body">
-    <p class="lead">Nesta aula você vai aprender a <strong>ler e escrever</strong> um formato de texto que a IA usa o tempo todo — e que você vai precisar entender para pedir respostas organizadas a ela.</p>
+  <div class="body" style="gap:16px">
+    <p class="lead" style="font-size:22px">Nesta aula você vai aprender a <strong>ler e escrever</strong> um formato de texto que a IA usa o tempo todo — e que você precisa entender para pedir respostas organizadas a ela.</p>
     <div class="cols-3">
       <div class="card"><h3>1 · O que é</h3><p>Que problema o JSON resolve, e por que ele existe.</p></div>
       <div class="card accent"><h3>2 · Como se estrutura</h3><p>Cada peça, uma de cada vez: chave, valor, tipos, listas.</p></div>
@@ -437,19 +437,19 @@ body.notes-on .notes b{color:#ffc46b}
 </section>
 
 <!-- ============ 03 · O PROBLEMA ============ -->
-<section class="slide">
+<section class="slide" style="padding-top:36px">
   <h2><span class="num">O problema</span>Dois programas precisam se entender</h2>
-  <div class="body">
-    <p class="lead">Um programa tem uma informação. Outro programa precisa dela. Só que <strong>programas não conversam</strong> — eles só trocam texto.</p>
+  <div class="body" style="gap:13px">
+    <p class="lead" style="font-size:20px">Um programa tem uma informação. Outro precisa dela. Só que <strong>programas não conversam</strong> — eles só trocam texto.</p>
     <div class="cols">
-      <div class="card accent">
+      <div class="card accent" style="padding:16px 20px">
         <h3>✗ Se mandar em texto solto</h3>
-        <p style="font-family:Georgia,serif;font-size:18px;line-height:1.5;margin-top:8px">"O aluno João da Silva, de 15 anos, tirou 8,5 em matemática e 7 em português."</p>
-        <p class="sub" style="font-size:17px;margin-top:10px">Uma pessoa entende. Um programa <strong>não sabe</strong> onde começa o nome, se "15" é a idade ou uma nota, nem o que fazer com a vírgula do 8,5.</p>
+        <p style="font-family:Georgia,serif;font-size:17px;line-height:1.45;margin-top:6px">"O aluno João da Silva, de 15 anos, tirou 8,5 em matemática e 7 em português."</p>
+        <p class="sub" style="font-size:15.5px;margin-top:8px">Uma pessoa entende. Um programa <strong>não sabe</strong> onde começa o nome, nem se "15" é idade ou nota.</p>
       </div>
-      <div class="card">
+      <div class="card" style="padding:16px 20px">
         <h3>✓ Se mandar organizado</h3>
-        <pre class="mini" style="margin-top:8px">{
+        <pre class="mini" style="margin-top:6px;font-size:13.5px;line-height:1.45;padding:9px 12px">{
   <span class="k">"nome"</span>: <span class="s">"João da Silva"</span>,
   <span class="k">"idade"</span>: <span class="n">15</span>,
   <span class="k">"notas"</span>: {
@@ -457,10 +457,10 @@ body.notes-on .notes b{color:#ffc46b}
     <span class="k">"portugues"</span>: <span class="n">7</span>
   }
 }</pre>
-        <p class="sub" style="font-size:17px;margin-top:10px">Cada dado tem <strong>nome</strong> e <strong>lugar</strong>. O programa pede "idade" e recebe 15. Sempre.</p>
+        <p class="sub" style="font-size:15.5px;margin-top:8px">Cada dado tem <strong>nome</strong> e <strong>lugar</strong>. O programa pede "idade" e recebe 15. Sempre.</p>
       </div>
     </div>
-    <div class="punch"><p>Isso da direita <strong>é JSON</strong>. É só isso: um jeito combinado de escrever informação para que qualquer programa saiba onde achar cada coisa.</p></div>
+    <div class="punch"><p style="font-size:21px">Isso da direita <strong>é JSON</strong>: um jeito combinado de escrever informação para que qualquer programa saiba onde achar cada coisa.</p></div>
   </div>
   <div class="brand">IA Generativa · Nivelamento <span class="autor">Maj Luiz Paulo</span></div><div class="pager"></div>
   <div class="notes">Não defina JSON antes de mostrar o problema — o formato só faz sentido depois que a dor aparece.<br><br>Leia a frase da esquerda em voz alta e pergunte: "está claro pra vocês?" Todos vão dizer que sim. Aí a virada: <b>está claro pra você porque você é humano</b>. Um programa não entende português, ele não sabe que "de 15 anos" quer dizer idade.<br><br>Depois mostre a direita e diga que aquilo é a mesma informação — só que arrumada de um jeito que a máquina consegue pegar campo por campo. E que aquilo já é JSON, a turma acabou de ver um sem saber.</div>
@@ -597,10 +597,10 @@ body.notes-on .notes b{color:#ffc46b}
 </section>
 
 <!-- ============ 10 · LISTA ============ -->
-<section class="slide">
+<section class="slide" style="padding-top:44px">
   <h2><span class="num">Tipo 5</span>A lista: quando tem mais de um</h2>
-  <div class="body">
-    <p class="lead">Colchetes <code>[ ]</code> guardam <strong>vários itens</strong>. Os itens ficam separados por vírgula, na ordem em que foram escritos.</p>
+  <div class="body" style="gap:16px">
+    <p class="lead" style="font-size:22px">Colchetes <code>[ ]</code> guardam <strong>vários itens</strong>. Os itens ficam separados por vírgula, na ordem em que foram escritos.</p>
     <div class="cols">
       <div class="card">
         <h3>Lista de textos</h3>
@@ -625,9 +625,9 @@ body.notes-on .notes b{color:#ffc46b}
 </section>
 
 <!-- ============ 11 · CHAVES x COLCHETES ============ -->
-<section class="slide">
+<section class="slide" style="padding-top:44px">
   <h2><span class="num">A confusão nº 1</span>Quando é <code>{ }</code> e quando é <code>[ ]</code>?</h2>
-  <div class="body">
+  <div class="body" style="gap:16px">
     <div class="cols">
       <div class="card">
         <h3>{ } — a ficha</h3>
@@ -781,28 +781,28 @@ body.notes-on .notes b{color:#ffc46b}
 </section>
 
 <!-- ============ 18 · POR QUE IMPORTA ============ -->
-<section class="slide">
+<section class="slide" style="padding-top:36px">
   <h2><span class="num">A virada</span>Por que isso importa para IA?</h2>
-  <div class="body">
-    <p class="lead">Uma IA responde em <strong>texto para pessoa ler</strong>. Mas quase sempre quem vai usar a resposta é <strong>outro programa</strong> — uma planilha, um sistema, um relatório.</p>
+  <div class="body" style="gap:13px">
+    <p class="lead" style="font-size:20px">Uma IA responde em <strong>texto para pessoa ler</strong>. Mas quase sempre quem vai usar a resposta é <strong>outro programa</strong> — uma planilha, um sistema, um relatório.</p>
     <div class="cols">
-      <div class="card accent">
+      <div class="card accent" style="padding:16px 20px">
         <h3>✗ Resposta em texto</h3>
-        <p style="font-family:Georgia,serif;font-size:17px;line-height:1.5">"Claro! O aluno João da Silva tem 15 anos e está matriculado. Não encontrei o telefone dele."</p>
-        <p class="sub" style="font-size:16.5px;margin-top:10px">Bonito de ler. Mas onde termina o nome? E se na próxima vez a IA escrever "João S." em vez de "João da Silva"?</p>
+        <p style="font-family:Georgia,serif;font-size:16.5px;line-height:1.45;margin-top:6px">"Claro! O aluno João da Silva tem 15 anos e está matriculado. Não encontrei o telefone dele."</p>
+        <p class="sub" style="font-size:15.5px;margin-top:8px">Bonito de ler. Mas onde termina o nome? E se na próxima vez ela escrever "João S."?</p>
       </div>
-      <div class="card">
+      <div class="card" style="padding:16px 20px">
         <h3>✓ Resposta em JSON</h3>
-        <pre class="mini"><span class="c">{</span>
+        <pre class="mini" style="margin-top:6px;font-size:13.5px;line-height:1.45;padding:9px 12px">{
   <span class="k">"nome"</span>: <span class="s">"João da Silva"</span>,
   <span class="k">"idade"</span>: <span class="n">15</span>,
   <span class="k">"matriculado"</span>: <span class="b">true</span>,
   <span class="k">"telefone"</span>: <span class="b">null</span>
-<span class="c">}</span></pre>
-        <p class="sub" style="font-size:16.5px;margin-top:10px">Mesma informação, <strong>lugar fixo</strong>. O programa pede "idade" e recebe 15 — hoje, amanhã e daqui a mil respostas.</p>
+}</pre>
+        <p class="sub" style="font-size:15.5px;margin-top:8px">Mesma informação, <strong>lugar fixo</strong>. Pede "idade", recebe 15 — hoje e daqui a mil respostas.</p>
       </div>
     </div>
-    <div class="punch"><p>Pedir a resposta em JSON transforma a IA de <strong>alguém que conversa</strong> em <strong>alguém que preenche ficha</strong>.</p></div>
+    <div class="punch"><p style="font-size:21px">Pedir a resposta em JSON transforma a IA de <strong>alguém que conversa</strong> em <strong>alguém que preenche ficha</strong>.</p></div>
   </div>
   <div class="brand">IA Generativa · Nivelamento <span class="autor">Maj Luiz Paulo</span></div><div class="pager"></div>
   <div class="notes">Pergunte: "as duas caixas dizem a mesma coisa?" Sim. "Então por que a da direita?"<br><br>A resposta está na palavra <b>previsível</b>. O problema do texto não é ele estar errado — é que a IA reescreve a frase de um jeito diferente a cada vez, e nenhum programa consegue depender disso.<br><br>Repare no <code>null</code> do telefone: no texto, a IA precisou de uma frase inteira ("não encontrei o telefone") pra dizer o que o JSON diz com quatro letras — e de um jeito que o programa entende.</div>
