@@ -861,10 +861,45 @@ body.notes-on .notes b{color:#ffc46b}
       <strong style="color:var(--accent);font-size:26px">13 trechos</strong>
     </div>
 
-    <div class="punch destaque"><p style="font-size:21px">Chunk de <strong>250</strong>? Cabem 27 — mais variedade, menos contexto em cada. Chunk de <strong>1.000</strong>? Cabem 6 — o contrário. <strong>É essa a decisão</strong>, e agora ela tem números.</p></div>
+    <div class="punch destaque"><p style="font-size:21px">Mudou o tamanho do trecho, mudou quantos cabem: de <strong>250</strong> cabem 27, de <strong>1.000</strong> cabem 6. <strong>O que se ganha e o que se perde em cada caso está no próximo slide.</strong></p></div>
   </div>
   <div class="brand">IA Generativa · Nivelamento <span class="autor">Maj Luiz Paulo</span></div><div class="pager"></div>
-  <div class="notes"><b>3 min — o slide que fecha a aula inteira.</b> Faça a conta em voz alta, linha por linha, sem pressa. É aritmética de quarta série, e é exatamente esse o ponto: depois de entender token, dimensionar um RAG deixa de ser intuição e vira subtração.<br><br><b>A linha que ninguém lembra é a reserva para a resposta.</b> A janela é compartilhada entre o que entra e o que sai — se você encher os 8.000 de contexto, não sobra espaço pro modelo escrever nada. É o erro mais comum de quem monta o primeiro RAG.<br><br><b>No quadro âmbar,</b> mostre que os dois extremos são a mesma conta com outro divisor. Não existe tamanho "certo" de chunk no vácuo: existe o que cabe no seu orçamento e responde a sua pergunta.<br><br>Todos os números são ilustrativos e redondos de propósito — a intenção é a turma conseguir refazer a conta de cabeça, não decorar valores.</div>
+  <div class="notes"><b>3 min.</b> Faça a conta em voz alta, linha por linha, sem pressa. É aritmética de quarta série, e é exatamente esse o ponto: depois de entender token, dimensionar um RAG deixa de ser intuição e vira subtração.<br><br><b>A linha que ninguém lembra é a reserva para a resposta.</b> A janela é compartilhada entre o que entra e o que sai — se você encher os 8.000 de contexto, não sobra espaço pro modelo escrever nada. É o erro mais comum de quem monta o primeiro RAG.<br><br>Todos os números são ilustrativos e redondos de propósito — a intenção é a turma conseguir refazer a conta de cabeça, não decorar valores.<br><br>Não explique o trade-off aqui; ele vem inteiro no slide seguinte, com o texto na tela.</div>
+</section>
+
+<!-- ============ 12C · O TRADE-OFF ============ -->
+<section class="slide" style="padding-top:34px">
+  <h2><span class="num">A decisão</span>Trecho curto ou trecho longo?</h2>
+  <div class="body" style="gap:13px">
+    <p class="lead" style="font-size:20px">O mesmo parágrafo, recortado de dois jeitos. A pergunta é: <strong>"a que horas a 24ª Bda ataca?"</strong></p>
+
+    <div class="cols">
+      <div class="card">
+        <h3>Trecho curto — cabem 27</h3>
+        <div style="font-family:Georgia,serif;font-size:16px;line-height:1.5;margin:10px 0">
+          <span style="background:#dbeafe;padding:2px 5px;border-radius:4px">"…a 24ª Bda C Bld ataca"</span>
+          <span style="color:#b91c1c;font-weight:700;font-family:'Segoe UI',sans-serif;font-size:14px"> ✂ corte aqui</span><br>
+          <span style="background:#e2e8f0;padding:2px 5px;border-radius:4px;color:#64748b">"APD D+1/0600. A 12ª DE apoia…"</span>
+          <span style="color:#64748b;font-family:'Segoe UI',sans-serif;font-size:14px"> ← ficou de fora</span>
+        </div>
+        <p style="font-size:16.5px;color:#15803d;margin-top:6px"><strong>✓ Ganha:</strong> alcança 27 lugares diferentes do acervo.</p>
+        <p style="font-size:16.5px;color:#b91c1c;margin-top:4px"><strong>✗ Perde:</strong> veio a unidade, mas <strong>o horário ficou no trecho seguinte</strong>, que não foi buscado.</p>
+      </div>
+
+      <div class="card accent">
+        <h3>Trecho longo — cabem 6</h3>
+        <div style="font-family:Georgia,serif;font-size:16px;line-height:1.5;margin:10px 0">
+          <span style="background:#dcfce7;padding:2px 5px;border-radius:4px">"…a 24ª Bda C Bld ataca APD D+1/0600. A 12ª DE apoia a partir de D+1/0800."</span>
+        </div>
+        <p style="font-size:16.5px;color:#15803d;margin-top:6px"><strong>✓ Ganha:</strong> unidade e horário vêm <strong>juntos</strong>, a resposta está completa.</p>
+        <p style="font-size:16.5px;color:#b91c1c;margin-top:4px"><strong>✗ Perde:</strong> só 6 trechos — se outras unidades estavam em 10 pontos do documento, 4 não vieram.</p>
+      </div>
+    </div>
+
+    <div class="punch"><p style="font-size:21px">Não existe tamanho certo no vácuo. A pergunta é: o que você procura fica <strong>junto num lugar</strong> (trecho longo) ou <strong>espalhado em muitos</strong> (trecho curto)?</p></div>
+  </div>
+  <div class="brand">IA Generativa · Nivelamento <span class="autor">Maj Luiz Paulo</span></div><div class="pager"></div>
+  <div class="notes"><b>3 min — o slide que fecha a aula inteira.</b> Leia a pergunta em voz alta primeiro: "a que horas a 24ª Bda ataca?". Depois mostre os dois recortes do <b>mesmo</b> parágrafo.<br><br><b>Esquerda.</b> O corte caiu bem no meio da informação. O trecho recuperado diz que a 24ª Bda ataca — mas a hora, que é justamente o que foi perguntado, ficou no pedaço seguinte, que a busca não trouxe. A IA responde com o que tem, e o que ela tem está incompleto.<br><br><b>Direita.</b> O mesmo texto, sem corte no meio: unidade e horário chegam juntos. Só que agora cabem 6 trechos em vez de 27 — e se a pergunta fosse sobre <b>todas</b> as unidades, boa parte do documento não teria vindo.<br><br><b>O fecho é a pergunta do quadro escuro</b>, e ela é prática: se a informação típica que você busca costuma estar concentrada num parágrafo, use trecho longo; se costuma estar espalhada, use trecho curto e traga mais.<br><br>Se perguntarem qual usar: na dúvida, comece pelo meio (algo em torno de 500) e ajuste testando com perguntas reais — não existe número universal.</div>
 </section>
 
 <!-- ============ 13 · ENCERRAMENTO ============ -->
