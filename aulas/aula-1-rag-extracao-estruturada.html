@@ -195,6 +195,10 @@ td.mid{color:var(--accent);font-weight:600}
   background:var(--brasao) center/74% no-repeat, rgba(255,255,255,.94);
   opacity:1;
 }
+/* só na capa (slide 1): o brasão do rodapé já está grande e visível
+   logo abaixo, o do canto ficava redundante. O ::fecho (encerramento)
+   também é .poster mas não entra aqui — :not(.fecho) pega só a capa. */
+.poster:not(.fecho)::after{display:none}
 
 
 /* nome da secao no rodape — preenchido sozinho a partir dos divisores */
