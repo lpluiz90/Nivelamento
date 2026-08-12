@@ -166,6 +166,10 @@ td.mid{color:var(--accent);font-weight:600}
   background:var(--brasao) center/74% no-repeat, rgba(255,255,255,.94);
   opacity:1;
 }
+/* só na capa (slide 1): o brasão do rodapé já está grande e visível
+   logo abaixo, o do canto ficava redundante — mesmo padrão da Aula 01.
+   O ::fecho (encerramento) também é .poster mas não entra aqui. */
+.poster:not(.fecho)::after{display:none}
 
 .brand .bloco{color:var(--primary-ink)}
 .slide.divider .brand .bloco{color:var(--fos-txt)}
@@ -248,15 +252,15 @@ body.notes-on .notes b{color:#ffc46b}
 .poster .moldura i:nth-child(3){bottom:0;left:0;border-right:0;border-top:0}
 .poster .moldura i:nth-child(4){bottom:0;right:0;border-left:0;border-top:0}
 
-.poster .titulo{position:absolute;left:78px;top:92px;width:640px;z-index:3}
+.poster .titulo{position:absolute;left:78px;top:92px;width:620px;z-index:3}
 .poster .kick{display:block;color:var(--fos);font-size:15px;font-weight:800;
   letter-spacing:3.4px;text-transform:uppercase;margin-bottom:16px}
-.poster .titulo h1{font-size:104px;line-height:.94;font-weight:800;letter-spacing:-1.6px;
+.poster .titulo h1{font-size:72px;line-height:.94;font-weight:800;letter-spacing:-1.6px;
   background:linear-gradient(180deg,#fff 0%,#e2eaf1 40%,#8d9aa7 60%,#f4f8fb 100%);
   -webkit-background-clip:text;background-clip:text;color:transparent;
   filter:drop-shadow(0 6px 22px rgba(0,0,0,.7))}
 .poster .l2{display:flex;align-items:center;gap:18px;margin:16px 0 22px}
-.poster .l2 b{color:var(--fos);font-size:24px;font-weight:800;letter-spacing:5px;
+.poster .l2 b{color:var(--fos);font-size:29px;font-weight:800;letter-spacing:7px;
   text-shadow:0 0 24px rgba(94,242,160,.45)}
 .poster .l2 span{flex:1;height:2px;background:linear-gradient(90deg,var(--fos),transparent)}
 .poster .lema{color:#b9cfc4;font-size:14.5px;font-weight:700;letter-spacing:3.6px;text-transform:uppercase}
@@ -387,10 +391,11 @@ body.notes-on .notes b{color:#ffc46b}
   <div class="notes"><b>Slide de abertura.</b> Deixe projetado enquanto a turma entra e se acomoda. Não há nada a explicar aqui — avance assim que for começar.</div>
 </section>
 
-<!-- Mini visualização 3D da capa: fragmentos de token girando no espaço —
-     cada um translada (órbita o centro, junto com o grupo) e também gira
-     sozinho no próprio eixo. Script isolado numa IIFE própria: não toca
-     em nenhum outro slide. -->
+<!-- Mini visualização 3D da capa: moedas girando no espaço — cada uma
+     translada (órbita o centro, junto com o grupo) e também gira
+     sozinha no próprio eixo, virando de face para perfil como uma
+     moeda de verdade (achatamento horizontal = cosseno do giro).
+     Script isolado numa IIFE própria: não toca em nenhum outro slide. -->
 <script>
 (function(){
   var cv = document.getElementById('capaTokens3d');
@@ -398,21 +403,22 @@ body.notes-on .notes b{color:#ffc46b}
   var ctx = cv.getContext('2d'), W = 306, H = 230;
   ctx.scale(2, 2);
 
-  var FRAGS = [
-    { t:'to',   c:'#4fb3f0' }, { t:'ken',  c:'#4fb3f0' }, { t:'IA',   c:'#4fb3f0' },
-    { t:'sub',  c:'#4fb3f0' }, { t:'pala', c:'#f0a35a' }, { t:'vra',  c:'#f0a35a' },
-    { t:'RAG',  c:'#f0a35a' }, { t:'gen',  c:'#f0a35a' }, { t:'LLM',  c:'#b98ce8' },
-    { t:'emb',  c:'#b98ce8' }, { t:'ção',  c:'#b98ce8' }, { t:'#42',  c:'#b98ce8' }
+  var METAIS = [
+    { c:'#e8c04a', b:'#a67c1e' },   /* ouro */
+    { c:'#d7dde3', b:'#8b96a3' },   /* prata */
+    { c:'#cd8a5c', b:'#8f5a37' }    /* bronze */
   ];
-  var PTS = FRAGS.map(function(f, i){
-    var a = (i / FRAGS.length) * Math.PI * 2;
-    var raio = 0.85 + (i % 3) * 0.28;
-    return {
+  var N = 13;
+  var PTS = [];
+  for(var i = 0; i < N; i++){
+    var a = (i / N) * Math.PI * 2;
+    var raio = 0.85 + (i % 3) * 0.3;
+    PTS.push({
       x: Math.cos(a) * raio, y: (Math.sin(i*1.7)) * 0.62, z: Math.sin(a) * raio,
-      spin: Math.random() * 6.28, vel: 0.01 + Math.random() * 0.018,
-      t: f.t, c: f.c
-    };
-  });
+      spin: Math.random() * 6.28, vel: 0.014 + Math.random() * 0.02,
+      m: METAIS[i % METAIS.length]
+    });
+  }
 
   var yaw = -0.5, pitch = -0.3, ESC = 56, F = 4.4, CX = W/2, CY = H/2;
 
@@ -433,26 +439,33 @@ body.notes-on .notes b{color:#ffc46b}
 
     qs.forEach(function(q){
       var p = q.p, s = q.s;
-      var lw = 30 * s, lh = 18 * s, r = 4 * s;
+      var R = 11 * s;
+      var achata = Math.cos(p.spin);                  /* -1..1: perfil ↔ de face */
+      var rx = Math.max(R * Math.abs(achata), R * 0.12);  /* nunca some de vez (borda) */
+
       ctx.save();
       ctx.translate(q.x, q.y);
-      ctx.rotate(p.spin);                            /* rotação própria */
-      ctx.globalAlpha = 0.45 + 0.5 * s;
-      ctx.fillStyle = p.c;
-      ctx.beginPath();
-      ctx.moveTo(-lw/2 + r, -lh/2);
-      ctx.arcTo( lw/2, -lh/2,  lw/2,  lh/2, r);
-      ctx.arcTo( lw/2,  lh/2, -lw/2,  lh/2, r);
-      ctx.arcTo(-lw/2,  lh/2, -lw/2, -lh/2, r);
-      ctx.arcTo(-lw/2, -lh/2,  lw/2, -lh/2, r);
-      ctx.closePath();
-      ctx.fill();
-      if(s > 0.72){                                  /* rótulo só quando legível */
-        ctx.rotate(-p.spin * 0.35);                   /* o texto acompanha bem menos: fica lível */
-        ctx.fillStyle = '#03070a';
-        ctx.font = '700 ' + (9.5*s).toFixed(1) + 'px "Segoe UI",sans-serif';
-        ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-        ctx.fillText(p.t, 0, 0.5);
+      ctx.globalAlpha = 0.55 + 0.4 * s;
+
+      if(rx <= R * 0.16){
+        /* de perfil: só a borda, uma lasquinha metálica fina */
+        ctx.fillStyle = p.m.b;
+        ctx.fillRect(-rx, -R, rx*2, R*2);
+      } else {
+        ctx.beginPath();
+        ctx.ellipse(0, 0, rx, R, 0, 0, Math.PI*2);
+        ctx.fillStyle = p.m.c;
+        ctx.fill();
+        ctx.lineWidth = Math.max(0.8, R*0.09);
+        ctx.strokeStyle = p.m.b;
+        ctx.stroke();
+        if(Math.abs(achata) > 0.55){                   /* rosto da moeda só quando legível */
+          ctx.beginPath();
+          ctx.ellipse(0, 0, rx*0.56, R*0.56, 0, 0, Math.PI*2);
+          ctx.strokeStyle = p.m.b;
+          ctx.lineWidth = Math.max(0.6, R*0.05);
+          ctx.stroke();
+        }
       }
       ctx.restore();
     });
@@ -463,7 +476,7 @@ body.notes-on .notes b{color:#ffc46b}
     var sec = cv.closest('.slide');
     if(sec && sec.classList.contains('active')){
       yaw += 0.0038;                                  /* translação: o grupo orbita */
-      PTS.forEach(function(p){ p.spin += p.vel; });    /* rotação: cada um gira sozinho */
+      PTS.forEach(function(p){ p.spin += p.vel; });    /* rotação: cada uma gira sozinha */
       desenha();
     }
     requestAnimationFrame(laco);
