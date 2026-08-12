@@ -595,12 +595,16 @@ body.notes-on .notes b{color:#ffc46b}
       <div class="card"><h3>O que não mudou</h3><p>Alguém ainda precisa responder por aquilo funcionar direito quando for para valer.</p></div>
     </div>
     <div class="analogy">
-      <span class="tag">Onde isso brilha</span>
-      <p>Um pequeno programa para conferir uma planilha. Uma página para organizar uma escala. Um protótipo para mostrar uma ideia antes de pedir orçamento. <strong>Coisas que antes não seriam feitas</strong> — não por serem difíceis, mas por não valerem a fila.</p>
+      <span class="tag">Um caso real — e o que ele fez certo</span>
+      <p style="font-size:19px"><strong>DentVault</strong>: um sistema de gestão de pacientes de consultório odontológico, apresentado numa comunidade de IA como feito por um dentista.
+      <a href="https://github.com/drilonmaloku96/DentVault" target="_blank" rel="noopener" style="color:var(--tip);font-weight:700">o projeto</a> ·
+      <a href="https://www.youtube.com/watch?v=J2go1qtaBjg" target="_blank" rel="noopener" style="color:var(--tip);font-weight:700">vídeo</a> ·
+      <a href="https://www.reddit.com/r/ClaudeAI/comments/1v9nmza/dentist_made_a_clinicpatient_management_app_with/" target="_blank" rel="noopener" style="color:var(--tip);font-weight:700">relato</a></p>
+      <p class="sub" style="font-size:17px;margin-top:6px">Duas decisões dele valem mais que o código: os dados ficam <strong>na máquina, sem nuvem</strong>, e ele declara que <strong>não é dispositivo médico certificado</strong> e o uso é por conta e risco. <strong>Voltamos a isso em três slides.</strong></p>
     </div>
   </div>
   <div class="brand">IA Generativa · Nivelamento <span class="autor">Maj Luiz Paulo</span></div><div class="pager"></div>
-  <div class="notes">Seja concreto aqui, e use exemplos da própria casa. A maioria das pequenas automações que ninguém faz não é difícil — é que não compensa mobilizar alguém pra isso.<br><br>O terceiro cartão é o contrapeso, e ele não pode ser esquecido: <b>a responsabilidade não some</b>. A ferramenta mudou quem consegue produzir; não mudou quem responde pelo resultado.<br><br>Se alguém perguntar "então não preciso mais de quem programa?": precisa, e mais do que antes — só que para as coisas que a próxima parte da aula mostra.</div>
+  <div class="notes">Seja concreto aqui, e use exemplos da própria casa: um programa para conferir planilha, uma página para organizar escala, um protótipo para mostrar uma ideia. A maioria das pequenas automações que ninguém faz não é difícil — é que não compensa mobilizar alguém pra isso.<br><br>O terceiro cartão é o contrapeso, e ele não pode ser esquecido: <b>a responsabilidade não some</b>. A ferramenta mudou quem consegue produzir; não mudou quem responde pelo resultado.<br><br><b>Sobre o DentVault.</b> É um projeto aberto e ativo, feito com ferramentas de verdade (Tauri, SvelteKit, TypeScript, SQLite) — não é um rascunho. O que interessa para a aula não é o código, são as <b>duas decisões de projeto</b> no quadro âmbar: os dados nunca saem da máquina do usuário, e o autor escreve, com todas as letras, que aquilo não é dispositivo médico certificado e que o uso é por conta e risco.<br><br><b>Uma ressalva honesta ao apresentar:</b> o relato circulou como "feito por um dentista", mas o projeto em si não declara a formação do autor. Apresente como "relatado como", não afirme.<br><br>Plante a pergunta agora e <b>não responda</b>: "isso seria aceitável na nossa casa?" A resposta vem no slide do critério.</div>
 </section>
 
 <!-- ============ 10 · BLOCO 3 ============ -->
@@ -666,14 +670,14 @@ body.notes-on .notes b{color:#ffc46b}
         <tr><td>Script que só você usa, no seu computador</td><td class="good">✓ à vontade</td><td>se quebrar, o prejuízo é seu tempo</td></tr>
         <tr><td>Aprender vendo como se faz</td><td class="good">✓ ótimo</td><td>desde que você pare para ler o resultado</td></tr>
         <tr><td>Ferramenta que a seção inteira vai usar</td><td class="mid">⚠ com revisão</td><td>alguém precisa assumir a manutenção</td></tr>
-        <tr><td>Qualquer coisa com dado de pessoal</td><td class="bad">✗ não</td><td>vazamento não tem desfazer</td></tr>
+        <tr><td>Qualquer coisa com dado de pessoal<br><span class="sub" style="font-size:15px">← é aqui que cai o DentVault</span></td><td class="bad">✗ não</td><td>vazamento não tem desfazer</td></tr>
         <tr><td>Sistema exposto na rede</td><td class="bad">✗ não</td><td>brecha vira porta de entrada</td></tr>
       </tbody>
     </table>
-    <div class="punch"><p style="font-size:22px">A pergunta que decide: <strong>se isso falhar, quem paga a conta?</strong> Se a resposta for "só eu", vibe coding à vontade.</p></div>
+    <div class="punch"><p style="font-size:21px">A pergunta que decide: <strong>se isso falhar, quem paga a conta?</strong> Se a resposta for "só eu", vibe coding à vontade.</p></div>
   </div>
   <div class="brand">IA Generativa · Nivelamento <span class="autor">Maj Luiz Paulo</span></div><div class="pager"></div>
-  <div class="notes">Percorra a tabela de cima para baixo — ela vai do "pode tudo" ao "não pode", e o eixo que organiza é sempre o mesmo: <b>quem sofre se der errado</b>.<br><br>As três primeiras linhas são liberdade real, e vale insistir nisso: existe uso legítimo e produtivo, não é uma aula contra a prática.<br><br>A linha do meio (⚠) é a mais comum na vida real e a mais mal resolvida. Ferramenta que "nasceu pessoal" e virou da seção inteira sem ninguém decidir — é aí que mora a maior parte dos problemas.<br><br><b>A pergunta do quadro escuro é o que a turma deve levar pra casa.</b> Ela funciona sem nenhum conhecimento técnico e resolve quase todos os casos.</div>
+  <div class="notes">Percorra a tabela de cima para baixo — ela vai do "pode tudo" ao "não pode", e o eixo que organiza é sempre o mesmo: <b>quem sofre se der errado</b>.<br><br>As três primeiras linhas são liberdade real, e vale insistir nisso: existe uso legítimo e produtivo, não é uma aula contra a prática.<br><br>A linha do meio (⚠) é a mais comum na vida real e a mais mal resolvida. Ferramenta que "nasceu pessoal" e virou da seção inteira sem ninguém decidir — é aí que mora a maior parte dos problemas.<br><br><b>Aqui você fecha o gancho do DentVault.</b> Ficha de paciente é dado de saúde — a linha vermelha da tabela. E, ainda assim, aquele projeto é defensável. Por quê?<br><br>Porque o autor tomou as <b>duas</b> decisões que mudam o risco: <b>1)</b> os dados nunca saem da máquina — sem nuvem, não há servidor para vazar nem terceiro com acesso; <b>2)</b> ele declarou o limite em vez de esconder — "não é dispositivo médico certificado, uso por conta e risco".<br><br><b>É esta a lição, e ela é melhor que um simples "não faça":</b> o que separa o irresponsável do responsável não é ter usado IA. É ter decidido <b>onde o dado mora</b> e ter sido <b>honesto sobre o limite</b>. Quem faz as duas coisas pode ir bem longe; quem não faz nenhuma cria problema mesmo escrevendo o código à mão.<br><br>Se alguém disser "mas funcionou pra ele": funcionar é justamente o que a aula mostrou que não basta — e note que ele também não parou no "funcionou". Volte ao slide da distinção.<br><br><b>A pergunta do quadro escuro é o que a turma deve levar pra casa.</b> Ela funciona sem nenhum conhecimento técnico e resolve quase todos os casos.</div>
 </section>
 
 <!-- ============ 14 · BLOCO 4 ============ -->
