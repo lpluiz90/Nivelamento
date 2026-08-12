@@ -841,41 +841,75 @@ body.notes-on .notes b{color:#ffc46b}
 <!-- ============ 12B · A CONTA ============ -->
 <section class="slide" style="padding-top:36px">
   <h2><span class="num">A conta, com números</span>Quantos trechos cabem no prompt?</h2>
-  <div class="body" style="gap:14px">
-    <p class="lead" style="font-size:21px">Exemplo com números redondos, num modelo de janela pequena:</p>
+  <div class="body" style="gap:12px">
+    <p class="lead" style="font-size:20px"><strong>Trecho</strong> = um pedaço do documento que a busca traz (o <em>chunk</em> da Aula 01). <strong>Tudo abaixo é medido em tokens.</strong></p>
 
-    <div style="background:#fff;border:1px solid var(--line);border-radius:11px;padding:16px 26px;box-shadow:var(--sombra);font-family:Consolas,monospace;font-size:19px;line-height:1.85">
-      <div style="display:flex;justify-content:space-between"><span>Janela de contexto do modelo</span><strong style="color:var(--primary-ink)">8.000</strong></div>
-      <div style="border-top:1px solid var(--line);margin:7px 0"></div>
-      <div style="display:flex;justify-content:space-between"><span>− instruções do sistema</span><span style="color:#b91c1c">− 200</span></div>
-      <div style="display:flex;justify-content:space-between"><span>− a pergunta do usuário</span><span style="color:#b91c1c">− 30</span></div>
-      <div style="display:flex;justify-content:space-between"><span>− reserva para a resposta</span><span style="color:#b91c1c">− 800</span></div>
-      <div style="border-top:2px solid var(--ink);margin:7px 0"></div>
-      <div style="display:flex;justify-content:space-between"><span><strong>= sobra para os trechos</strong></span><strong style="color:var(--accent);font-size:22px">6.970</strong></div>
+    <div style="background:#fff;border:1px solid var(--line);border-radius:11px;padding:14px 26px;box-shadow:var(--sombra);font-family:Consolas,monospace;font-size:18px;line-height:1.8">
+      <div style="display:flex;justify-content:space-between"><span>Janela de contexto do modelo</span><strong style="color:var(--primary-ink)">8.000 tokens</strong></div>
+      <div style="border-top:1px solid var(--line);margin:6px 0"></div>
+      <div style="display:flex;justify-content:space-between"><span>− instruções do sistema</span><span style="color:#b91c1c">− 200 tokens</span></div>
+      <div style="display:flex;justify-content:space-between"><span>− a pergunta do usuário</span><span style="color:#b91c1c">− 30 tokens</span></div>
+      <div style="display:flex;justify-content:space-between"><span>− reserva para a resposta</span><span style="color:#b91c1c">− 800 tokens</span></div>
+      <div style="border-top:2px solid var(--ink);margin:6px 0"></div>
+      <div style="display:flex;justify-content:space-between"><span><strong>= sobra para os trechos</strong></span><strong style="color:var(--accent);font-size:21px">6.970 tokens</strong></div>
     </div>
 
-    <div style="display:flex;align-items:center;justify-content:center;gap:18px;font-family:Consolas,monospace;font-size:21px;flex-wrap:wrap">
-      <span>6.970</span><span style="color:var(--muted)">÷</span>
-      <span>500 <span style="font-family:'Segoe UI',sans-serif;font-size:15px;color:var(--muted)">(tamanho do chunk)</span></span>
-      <span style="color:var(--muted)">=</span>
-      <strong style="color:var(--accent);font-size:26px">13 trechos</strong>
+    <div style="background:var(--tip-l);border:1px dashed #f0cfae;border-radius:11px;padding:13px 20px;text-align:center">
+      <div style="font-family:Consolas,monospace;font-size:20px;line-height:1.5">
+        <strong style="color:var(--accent)">6.970 tokens</strong>
+        <span style="color:var(--muted)"> ÷ </span>
+        <strong style="color:var(--primary-ink)">500 tokens por trecho</strong>
+        <span style="color:var(--muted)"> = </span>
+        <strong style="color:var(--accent);font-size:25px">13 trechos</strong>
+      </div>
+      <p class="sub" style="font-size:16px;margin-top:7px">Dividir <strong>tokens</strong> por <strong>tokens&nbsp;por&nbsp;trecho</strong> dá <strong>trechos</strong> — o "por trecho" do divisor é o que muda a unidade da resposta.</p>
     </div>
 
-    <div class="punch destaque"><p style="font-size:21px">Mudou o tamanho do trecho, mudou quantos cabem: de <strong>250</strong> cabem 27, de <strong>1.000</strong> cabem 6. <strong>O que se ganha e o que se perde em cada caso está no próximo slide.</strong></p></div>
+    <div class="punch destaque"><p style="font-size:20px">Mesmo orçamento, tamanhos diferentes: trechos de <strong>250 tokens</strong> → cabem 27; de <strong>1.000 tokens</strong> → cabem 6. <strong>O próximo slide mostra o que isso muda.</strong></p></div>
   </div>
   <div class="brand">IA Generativa · Nivelamento <span class="autor">Maj Luiz Paulo</span></div><div class="pager"></div>
   <div class="notes"><b>3 min.</b> Faça a conta em voz alta, linha por linha, sem pressa. É aritmética de quarta série, e é exatamente esse o ponto: depois de entender token, dimensionar um RAG deixa de ser intuição e vira subtração.<br><br><b>A linha que ninguém lembra é a reserva para a resposta.</b> A janela é compartilhada entre o que entra e o que sai — se você encher os 8.000 de contexto, não sobra espaço pro modelo escrever nada. É o erro mais comum de quem monta o primeiro RAG.<br><br>Todos os números são ilustrativos e redondos de propósito — a intenção é a turma conseguir refazer a conta de cabeça, não decorar valores.<br><br>Não explique o trade-off aqui; ele vem inteiro no slide seguinte, com o texto na tela.</div>
 </section>
 
-<!-- ============ 12C · O TRADE-OFF ============ -->
+<!-- ============ 12C · O MESMO ESPAÇO ============ -->
+<section class="slide" style="padding-top:36px">
+  <h2><span class="num">O que muda</span>O mesmo espaço, repartido de dois jeitos</h2>
+  <div class="body" style="gap:14px">
+    <p class="lead" style="font-size:20px">Os <strong>6.970 tokens</strong> que sobraram são sempre os mesmos. O que muda é <strong>em quantos pedaços</strong> você os reparte — e cada pedaço vem de um lugar diferente do documento.</p>
+
+    <div>
+      <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:7px">
+        <span style="font-size:17px;font-weight:700;color:var(--primary-ink)">Trechos de 250 tokens</span>
+        <span style="font-size:17px;color:var(--muted)">cabem <strong style="color:var(--primary-ink);font-size:21px">27 trechos</strong></span>
+      </div>
+      <div style="height:44px;border:1px solid var(--line);border-radius:7px;overflow:hidden;background:repeating-linear-gradient(90deg,#098CDF 0 3.10%,#fff 3.10% 3.7037%)"></div>
+      <p class="sub" style="font-size:16px;margin-top:6px">27 pedaços curtos → alcança <strong>27 lugares diferentes</strong> do documento, mas cada um traz pouco texto em volta.</p>
+    </div>
+
+    <div>
+      <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:7px">
+        <span style="font-size:17px;font-weight:700;color:var(--accent)">Trechos de 1.000 tokens</span>
+        <span style="font-size:17px;color:var(--muted)">cabem <strong style="color:var(--accent);font-size:21px">6 trechos</strong></span>
+      </div>
+      <div style="height:44px;border:1px solid var(--line);border-radius:7px;overflow:hidden;background:repeating-linear-gradient(90deg,#b45309 0 15.6%,#fff 15.6% 16.667%)"></div>
+      <p class="sub" style="font-size:16px;margin-top:6px">6 pedaços longos → só <strong>6 lugares</strong> do documento, mas cada um vem com o parágrafo inteiro.</p>
+    </div>
+
+    <div class="punch destaque"><p style="font-size:20px">As duas barras têm <strong>a mesma largura</strong> — é o mesmo orçamento de tokens. Muda só o tamanho da fatia.</p></div>
+  </div>
+  <div class="brand">IA Generativa · Nivelamento <span class="autor">Maj Luiz Paulo</span></div><div class="pager"></div>
+  <div class="notes"><b>2 min — o slide que responde "cabem 27 o quê?".</b> Aponte primeiro que <b>as duas barras têm exatamente a mesma largura</b>. É o mesmo espaço, os mesmos 6.970 tokens. A única diferença é o tamanho da fatia.<br><br>Cada fatia é <b>um trecho</b>: um pedaço do documento que a busca vai trazer e colar no prompt. Então "cabem 27" quer dizer que a IA vai poder ler 27 pedaços diferentes do acervo antes de responder — contra 6, no outro caso.<br><br>Pergunte antes de virar: "qual dos dois vocês escolheriam?" Deixe a turma se dividir — não há resposta certa ainda, e é justamente isso que o próximo slide mostra.</div>
+</section>
+
+<!-- ============ 12D · O TRADE-OFF ============ -->
 <section class="slide" style="padding-top:34px">
-  <h2><span class="num">A decisão</span>Trecho curto ou trecho longo?</h2>
+  <h2><span class="num">A decisão</span>O que se ganha e o que se perde</h2>
   <div class="body" style="gap:13px">
     <p class="lead" style="font-size:20px">O mesmo parágrafo, recortado de dois jeitos. A pergunta é: <strong>"a que horas a 23ª Bda ataca?"</strong></p>
 
     <div class="cols">
       <div class="card">
-        <h3>Trecho curto — cabem 27</h3>
+        <h3>Trecho curto — cabem 27 trechos</h3>
         <div style="font-family:Georgia,serif;font-size:16px;line-height:1.5;margin:10px 0">
           <span style="background:#dbeafe;padding:2px 5px;border-radius:4px">"…a 23ª Bda C Bld ataca"</span>
           <span style="color:#b91c1c;font-weight:700;font-family:'Segoe UI',sans-serif;font-size:14px"> ✂ corte aqui</span><br>
@@ -887,7 +921,7 @@ body.notes-on .notes b{color:#ffc46b}
       </div>
 
       <div class="card accent">
-        <h3>Trecho longo — cabem 6</h3>
+        <h3>Trecho longo — cabem 6 trechos</h3>
         <div style="font-family:Georgia,serif;font-size:16px;line-height:1.5;margin:10px 0">
           <span style="background:#dcfce7;padding:2px 5px;border-radius:4px">"…a 23ª Bda C Bld ataca APD D+1/0600. A 12ª DE apoia a partir de D+1/0800."</span>
         </div>
