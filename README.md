@@ -10,7 +10,7 @@ rede): abre offline em qualquer navegador.
 
 1. [RAG e Extração Estruturada](aulas/aula-1-rag-extracao-estruturada.html) — publicada
 2. [Tokens](aulas/aula-2-tokens.html) — publicada
-3. Prompt de extração e validação — em preparação
+3. [JSON](aulas/aula-3-json.html) — publicada
 
 ## Estrutura
 
