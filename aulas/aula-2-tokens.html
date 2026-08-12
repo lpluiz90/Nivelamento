@@ -482,18 +482,41 @@ body.notes-on .notes b{color:#ffc46b}
 </section>
 
 <!-- ============ 08 · COMO SE CONTAM ============ -->
-<section class="slide">
+<section class="slide" style="padding-top:36px">
   <h2><span class="num">A régua</span>Como os tokens são contados</h2>
-  <div class="body">
-    <p class="lead">Toda vez que você usa uma IA generativa, dois números entram na conta.</p>
-    <div class="cols">
-      <div class="card"><h3>Tokens de entrada</h3><p>Tudo que você manda: a pergunta, o histórico da conversa, documentos anexados.</p></div>
-      <div class="card accent"><h3>Tokens de saída</h3><p>Tudo que a IA escreve de volta — inclusive quando ela "pensa" em voz alta antes de responder.</p></div>
+  <div class="body" style="gap:16px">
+    <p class="lead" style="font-size:22px">Toda vez que você usa uma IA generativa, dois números entram na conta — e os dois são tokens.</p>
+
+    <div style="display:grid;grid-template-columns:1fr auto 1fr;align-items:center">
+      <div>
+        <span style="display:block;text-align:center;font-size:12.5px;font-weight:800;letter-spacing:1.6px;color:var(--muted);text-transform:uppercase;margin-bottom:10px">Entrada</span>
+        <div style="background:#fff;border:1px solid var(--line);border-left:5px solid var(--primary);border-radius:10px;padding:12px 14px;text-align:center;font-size:16px;margin-bottom:10px">Explique o que é RAG</div>
+        <div style="display:flex;flex-wrap:wrap;gap:5px;justify-content:center;font-family:Consolas,monospace;font-size:14px">
+          <span style="background:#dbeafe;padding:3px 8px;border-radius:5px">Explique</span><span style="background:#dbeafe;padding:3px 8px;border-radius:5px">o</span><span style="background:#dbeafe;padding:3px 8px;border-radius:5px">que</span><span style="background:#dbeafe;padding:3px 8px;border-radius:5px">é</span><span style="background:#dbeafe;padding:3px 8px;border-radius:5px">RAG</span>
+        </div>
+        <p class="sub" style="text-align:center;margin-top:8px"><strong style="color:var(--primary-ink)">5 tokens</strong> de entrada</p>
+      </div>
+
+      <div style="display:flex;flex-direction:column;align-items:center;padding:0 20px;gap:6px">
+        <span style="font-size:22px;color:var(--muted)">→</span>
+        <div style="background:var(--primary-ink);color:#fff;border-radius:9px;padding:9px 16px;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:1px">Modelo</div>
+        <span style="font-size:22px;color:var(--muted)">→</span>
+      </div>
+
+      <div>
+        <span style="display:block;text-align:center;font-size:12.5px;font-weight:800;letter-spacing:1.6px;color:var(--muted);text-transform:uppercase;margin-bottom:10px">Saída</span>
+        <div style="background:#fff;border:1px solid var(--line);border-left:5px solid var(--accent);border-radius:10px;padding:12px 14px;text-align:center;font-size:16px;margin-bottom:10px">RAG busca trechos e monta a resposta com eles</div>
+        <div style="display:flex;flex-wrap:wrap;gap:5px;justify-content:center;font-family:Consolas,monospace;font-size:14px">
+          <span style="background:#fef3c7;padding:3px 8px;border-radius:5px">RAG</span><span style="background:#fef3c7;padding:3px 8px;border-radius:5px">busca</span><span style="background:#fef3c7;padding:3px 8px;border-radius:5px">trechos</span><span style="background:#fef3c7;padding:3px 8px;border-radius:5px">e</span><span style="background:#fef3c7;padding:3px 8px;border-radius:5px">monta</span><span style="background:#fef3c7;padding:3px 8px;border-radius:5px">a</span><span style="background:#fef3c7;padding:3px 8px;border-radius:5px">resposta</span><span style="background:#fef3c7;padding:3px 8px;border-radius:5px">com</span><span style="background:#fef3c7;padding:3px 8px;border-radius:5px">eles</span>
+        </div>
+        <p class="sub" style="text-align:center;margin-top:8px"><strong style="color:var(--accent)">9 tokens</strong> de saída</p>
+      </div>
     </div>
+
     <div class="punch destaque"><p>Entrada + saída = o <strong>total</strong> que aparece na fatura e o que ocupa a janela de contexto.</p></div>
   </div>
   <div class="brand">IA Generativa · Nivelamento <span class="autor">Maj Luiz Paulo</span></div><div class="pager"></div>
-  <div class="notes"><b>2 min.</b> Ponto importante: o histórico da conversa conta como entrada A CADA mensagem nova. Numa conversa longa, você está pagando de novo pelos tokens das mensagens anteriores toda vez que manda uma nova pergunta — não é só a última linha que é cobrada.</div>
+  <div class="notes"><b>2 min.</b> Ponto importante: o histórico da conversa conta como entrada A CADA mensagem nova. Numa conversa longa, você está pagando de novo pelos tokens das mensagens anteriores toda vez que manda uma nova pergunta — não é só a última linha que é cobrada.<br><br>O exemplo do diagrama usa 1 palavra = 1 token só pra deixar o fluxo entrada→modelo→saída visível de longe; a divisão real em subpalavras já foi mostrada no slide anterior.</div>
 </section>
 
 <!-- ============ 09 · REGRA PRÁTICA ============ -->
@@ -504,14 +527,22 @@ body.notes-on .notes b{color:#ffc46b}
     <table>
       <thead><tr><th style="width:34%">Regra de bolso</th><th style="width:33%">Em inglês</th><th>Em português</th></tr></thead>
       <tbody>
-        <tr><td>Caracteres por token</td><td class="good">~4</td><td class="mid">um pouco menos — mais pedaços por palavra</td></tr>
+        <tr><td>Caracteres por token</td><td class="good">~4</td><td class="mid">mais — veja o exemplo medido abaixo</td></tr>
         <tr><td>Palavras por token</td><td class="good">~0,75</td><td class="mid">um pouco menos, pelo mesmo motivo</td></tr>
       </tbody>
     </table>
+
+    <div style="background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px 20px">
+      <span style="display:block;font-size:12.5px;font-weight:800;letter-spacing:1.6px;color:var(--muted);text-transform:uppercase;margin-bottom:9px">Exemplo medido numa ferramenta real de contagem</span>
+      <div style="display:flex;justify-content:space-between;gap:20px;font-size:16.5px"><span>Pergunta curta — 43 caracteres</span><strong style="color:var(--primary-ink)">8 tokens</strong></div>
+      <div style="display:flex;justify-content:space-between;gap:20px;font-size:16.5px;margin-top:6px"><span>Resposta — 350 caracteres</span><strong style="color:var(--accent)">54 tokens</strong></div>
+      <p class="sub" style="margin-top:8px">350 ÷ 54 ≈ <strong>6,5 caracteres por token</strong> neste exemplo — bem acima dos ~4 do inglês.</p>
+    </div>
+
     <p class="sub" style="text-align:center">Regra de bolso, não fórmula exata — cada ferramenta conta um pouco diferente. Serve pra estimar, não pra faturar.</p>
   </div>
   <div class="brand">IA Generativa · Nivelamento <span class="autor">Maj Luiz Paulo</span></div><div class="pager"></div>
-  <div class="notes"><b>1,5 min.</b> "~4 caracteres por token" é a regra de bolso mais citada pra inglês. Não prometa um número fixo pro português — a mensagem é "um pouco pior", não um multiplicador exato. Se alguém pedir precisão, a resposta certa é "depende do modelo e da ferramenta — teste com o texto real".</div>
+  <div class="notes"><b>1,5 min.</b> "~4 caracteres por token" é a regra de bolso mais citada pra inglês. O exemplo medido no slide é real — pergunta de 43 caracteres virou 8 tokens, resposta de 350 caracteres virou 54 — e mostra por que, em português, a conta fecha mais perto de 6 caracteres por token do que de 4. Se alguém pedir precisão absoluta, a resposta certa é "depende do modelo e da ferramenta — teste com o texto real".<br><br>Fonte de apoio pro instrutor: tecnoblog.net tem dois artigos em pt-BR só sobre o que é token em IA, bons pra quem quiser aprofundar antes de dar a aula.</div>
 </section>
 
 <!-- ============ 10 · CONTEXTO ============ -->
@@ -534,12 +565,18 @@ body.notes-on .notes b{color:#ffc46b}
       <li>Serviços de IA cobram <strong>por token</strong>, não por "pergunta" ou por "uso do dia".</li>
       <li>O preço costuma ser por <strong>milhão de tokens</strong>, separado para entrada e saída.</li>
       <li>Tokens de <strong>saída</strong> em geral custam mais que os de entrada — a IA "escrevendo" pesa mais que "lendo".</li>
-      <li>Os valores mudam com frequência: confira sempre a tabela atual do serviço antes de orçar.</li>
+      <li>Os valores mudam com frequência: confira sempre uma tabela atualizada antes de orçar.</li>
     </ul>
+
+    <div class="analogy">
+      <span class="tag">Ferramenta útil</span>
+      <p>Pra comparar quanto cada modelo cobra por token, hoje: <a href="https://pricepertoken.com" target="_blank" rel="noopener" style="color:var(--tip);font-weight:700">pricepertoken.com</a> — uma tabela que se atualiza sozinha, em vez de um número fixo que envelhece num slide.</p>
+    </div>
+
     <div class="punch destaque"><p>Pergunta curta e direta custa menos que colar um manual inteiro toda vez. O mesmo token de contexto é pago de novo a cada mensagem, se a conversa continuar.</p></div>
   </div>
   <div class="brand">IA Generativa · Nivelamento <span class="autor">Maj Luiz Paulo</span></div><div class="pager"></div>
-  <div class="notes"><b>2 min.</b> Não cite valores em reais ou dólares — preço de token muda com frequência e qualquer número fixo aqui ficaria desatualizado rápido. O que é estável é o PADRÃO: cobrança por milhão de tokens, saída mais cara que entrada, e histórico de conversa que se acumula.</div>
+  <div class="notes"><b>2 min.</b> Não cite valores em reais ou dólares — preço de token muda com frequência e qualquer número fixo aqui ficaria desatualizado rápido. O que é estável é o PADRÃO: cobrança por milhão de tokens, saída mais cara que entrada, e histórico de conversa que se acumula. Se der tempo, abra o pricepertoken.com ao vivo e mostre a turma comparando dois ou três modelos.</div>
 </section>
 
 <!-- ============ 12 · LIGANDO COM A AULA 01 ============ -->
