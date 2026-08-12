@@ -2066,17 +2066,17 @@ mark{padding:1px 6px;border-radius:4px;font-weight:600;color:#1a2332;background:
       <li>Quando o RAG falha, o culpado é o <strong>chunking ou a busca</strong> — quase nunca o modelo.</li>
       <li>Comece pequeno: <strong>três documentos</strong>, não trezentos. O problema aparece cedo e barato.</li>
     </ul>
-    <div class="punch destaque"><p>Vimos <strong>três caminhos</strong>: CPT, Fine Tuning e RAG. Falta o <strong>quarto</strong> — e é justamente o do Projeto Interdisciplinar de vocês.</p></div>
+    <div class="punch destaque"><p>Vimos <strong>três caminhos</strong>: CPT, Fine Tuning e RAG. Falta o <strong>quarto</strong> — Extração estruturada.</p></div>
   </div>
   <div class="brand">IA Generativa · RAG <span class="autor">Maj Luiz Paulo</span></div><div class="pager"></div>
-  <div class="notes"><b>2 min.</b> Este slide fecha o bloco de RAG — <b>não é o fim da instrução</b>. Recapitule as cinco linhas e pare.<br><br>Depois use o quadro âmbar como virada: "vimos três caminhos; falta o quarto, e é o que vocês vão usar amanhã". Faça a pausa aí — a curiosidade sobre o que falta é o que segura a atenção nos quatro slides finais.<br><br>Se aparecerem perguntas sobre RAG, respondam aqui mesmo: "roda na nossa rede?" (sim, tudo pode ser local), "quanto custa?" (o RAG é o mais barato dos três), "dá para documento sigiloso?" (depende da classificação — decisão do comando, não técnica).</div>
+  <div class="notes"><b>2 min.</b> Este slide fecha o bloco de RAG — <b>não é o fim da instrução</b>. Recapitule as cinco linhas e pare.<br><br>Depois use o quadro âmbar como virada: "vimos três caminhos; falta o quarto — e é sobre ele que vamos falar agora". Faça a pausa aí — a curiosidade sobre o que falta é o que segura a atenção nos quatro slides finais.<br><br>Se aparecerem perguntas sobre RAG, respondam aqui mesmo: "roda numa rede local?" (sim, tudo pode ser local), "quanto custa?" (o RAG é o mais barato dos três), "dá para documento sigiloso?" (depende da classificação — decisão de quem administra o dado, não técnica).</div>
 </section>
 
 <!-- ============ 40 · DIVISOR EXTRAÇÃO ============ -->
 <section class="slide divider">
   <span class="kicker">Bloco 4</span>
   <h1>Extração estruturada</h1>
-  <p>O quarto caminho — e o único que vocês vão usar no Projeto Interdisciplinar.</p>
+  <p>O quarto caminho — na direção oposta dos outros três.</p>
   <div class="notes"><b>10 s.</b> Anuncie: "tudo que vimos até agora foi sobre <b>dar</b> conhecimento à IA. Agora é o contrário."</div>
 </section>
 
@@ -2179,25 +2179,25 @@ mark{padding:1px 6px;border-radius:4px;font-weight:600;color:#1a2332;background:
     </div>
   </div>
   <div class="brand">IA Generativa · RAG <span class="autor">Maj Luiz Paulo</span></div><div class="pager"></div>
-  <div class="notes"><b>2,5 min — o slide que evita o erro mais caro do PI.</b><br><br>Percorra a coluna "O que entra": bilhões de palavras · milhares de pares · milhares de documentos indexados · <b>um documento</b>. A diferença de escala já diz tudo.<br><br>Depois a frase do quadro âmbar, devagar: CPT, FT e RAG são três formas de <b>dar</b> conhecimento. Extração é <b>tirar</b> dado. Não é uma quarta versão da mesma coisa — é o caminho contrário.<br><br>Se alguém perguntar "então não vamos usar nada do que aprendemos?": vão usar tudo, menos como ferramenta. Vão usar como <b>critério</b> — saber por que não é RAG é o que impede o grupo de perder duas semanas montando banco vetorial que ninguém pediu.</div>
+  <div class="notes"><b>2,5 min — o slide que evita o erro mais caro desta etapa.</b><br><br>Percorra a coluna "O que entra": bilhões de palavras · milhares de pares · milhares de documentos indexados · <b>um documento</b>. A diferença de escala já diz tudo.<br><br>Depois a frase do quadro âmbar, devagar: CPT, FT e RAG são três formas de <b>dar</b> conhecimento. Extração é <b>tirar</b> dado. Não é uma quarta versão da mesma coisa — é o caminho contrário.<br><br>Se alguém perguntar "então não vamos usar nada do que aprendemos?": vão usar tudo, menos como ferramenta. Vão usar como <b>critério</b> — saber por que não é RAG é o que impede de perder semanas montando banco vetorial que ninguém pediu.</div>
 </section>
 
-<!-- ============ 43 · O QUE VOCÊS VÃO FAZER ============ -->
+<!-- ============ 43 · COMO APLICAR ============ -->
 <section class="slide">
-  <h2><span class="num">Projeto Interdisciplinar</span>O que vocês, como alunos, vão fazer</h2>
+  <h2><span class="num">Extração estruturada</span>Como aplicar isto na prática</h2>
   <div class="body">
     <div class="cols-3">
       <div class="card"><h3>1 · Mapear</h3><p>Grifar por cores, na Ordem do escalão superior, <strong>de onde vem cada informação</strong> que o escalão subordinado precisa.</p></div>
       <div class="card accent"><h3>2 · Escrever o prompt</h3><p>Transformar esse mapeamento num comando que extrai os mesmos campos de <strong>qualquer</strong> exercício, devolvendo JSON.</p></div>
-      <div class="card"><h3>3 · Conferir</h3><p>Rodar no exercício de referência e comparar a saída com o gabarito, campo por campo.</p></div>
+      <div class="card"><h3>3 · Conferir</h3><p>Rodar num exercício de referência e comparar a saída com o gabarito, campo por campo.</p></div>
     </div>
     <div class="punch">
-      <p><strong>Não</strong> vão treinar modelo. <strong>Não</strong> vão montar banco vetorial. <strong>Não</strong> vão fazer chunking nem embeddings.</p>
+      <p><strong>Não</strong> precisa treinar modelo. <strong>Não</strong> precisa montar banco vetorial. <strong>Não</strong> precisa fazer chunking nem embeddings.</p>
     </div>
-    <p class="sub" style="text-align:center">Todo o resto desta instrução serve para vocês entenderem <em>por quê</em> — e para saberem escolher certo da próxima vez.</p>
+    <p class="sub" style="text-align:center">Todo o resto desta instrução serve para você entender <em>por quê</em> — e para saber escolher certo da próxima vez.</p>
   </div>
   <div class="brand">IA Generativa · RAG <span class="autor">Maj Luiz Paulo</span></div><div class="pager"></div>
-  <div class="notes"><b>2 min — fecho da instrução.</b> Leia o quadro escuro em voz alta, os três "não". É o recado mais importante do dia para quem vai começar o PI amanhã.<br><br>Depois a linha de baixo: nada do que vimos foi desperdício. Sem entender RAG, o grupo não teria como <b>saber</b> que não precisa dele — e essa decisão vale semanas.<br><br>Encaminhe para o roteiro prático: lá estão as etapas, o código de cores e o exemplo de prompt completo.</div>
+  <div class="notes"><b>2 min — fecho da instrução.</b> Leia o quadro escuro em voz alta, os três "não". É o recado mais importante para quem for aplicar isto na prática.<br><br>Depois a linha de baixo: nada do que vimos foi desperdício. Sem entender RAG, ninguém teria como <b>saber</b> que não precisa dele — e essa decisão vale semanas.</div>
 </section>
 
 <!-- ============ 44 · POR QUE JSON ============ -->
@@ -2218,13 +2218,13 @@ mark{padding:1px 6px;border-radius:4px;font-weight:600;color:#1a2332;background:
   <b>"inicio_acao"</b>: "APD D+1/0600",
   <b>"local_bloqueio"</b>: "Rg do P Cot 486 (72 - 52)"
 }</pre>
-        <p class="sub">Cada dado tem <strong>nome fixo e lugar fixo</strong>. O programa do CDS pega <code>divisao</code> e sabe exatamente o que vai receber.</p>
+        <p class="sub">Cada dado tem <strong>nome fixo e lugar fixo</strong>. Quem for consumir isso pega <code>divisao</code> e sabe exatamente o que vai receber.</p>
       </div>
     </div>
     <div class="punch"><p>A saída não é para <strong>pessoa</strong> ler — é para <strong>outro programa</strong> consumir. Por isso a forma importa tanto quanto o conteúdo.</p></div>
   </div>
   <div class="brand">IA Generativa · RAG <span class="autor">Maj Luiz Paulo</span></div><div class="pager"></div>
-  <div class="notes"><b>2 min.</b> Pergunte à turma: "as duas caixas dizem a mesma coisa?" Sim. "Então por que a da direita?"<br><br>A resposta: o sistema do CDS vai <b>pegar um campo por vez</b>. Com texto corrido ele teria que adivinhar onde cada dado começa e termina — e erraria toda vez que a IA reescrevesse a frase de um jeito diferente.<br><br>Analogia: é a diferença entre entregar um <b>relato</b> e entregar uma <b>ficha preenchida</b>. Os dois têm a informação; só a ficha pode ser processada em massa.</div>
+  <div class="notes"><b>2 min.</b> Pergunte à turma: "as duas caixas dizem a mesma coisa?" Sim. "Então por que a da direita?"<br><br>A resposta: quem for ler essa saída vai <b>pegar um campo por vez</b>. Com texto corrido teria que adivinhar onde cada dado começa e termina — e erraria toda vez que a IA reescrevesse a frase de um jeito diferente.<br><br>Analogia: é a diferença entre entregar um <b>relato</b> e entregar uma <b>ficha preenchida</b>. Os dois têm a informação; só a ficha pode ser processada em massa.</div>
 </section>
 
 <!-- ============ 45 · O GRIFO NA PRÁTICA ============ -->
@@ -2254,7 +2254,7 @@ mark{padding:1px 6px;border-radius:4px;font-weight:600;color:#1a2332;background:
     <p class="sub" style="text-align:center">A cor responde a uma pergunta só: <strong>de onde veio esta informação?</strong> — não a que campo ela pertence.</p>
   </div>
   <div class="brand">IA Generativa · RAG <span class="autor">Maj Luiz Paulo</span></div><div class="pager"></div>
-  <div class="notes"><b>3 min — o slide mais importante do bloco.</b><br><br>Leia o parágrafo apontando cada grifo e dizendo a <b>natureza</b>, não o nome do campo: "isto é transcrição direta", "isto é dado geográfico". A diretriz do PI exige o código de cores por <b>origem/natureza</b> — quem grifar por campo estará fora do pedido.<br><br>Repare que quase tudo é verde. Isso é esperado numa tarefa de extração, e é justamente por isso que a <b>última linha</b> é a mais valiosa: laranja, roxo e vermelho são coisas que <b>não estão no texto</b>.<br><br>O vermelho é o achado do trabalho: informação necessária que a ordem superior <b>não fornece</b>. Nenhum prompt, por melhor que seja, vai extrair o que não está escrito — e o CDS precisa saber disso.<br><br>Feche com: <b>grifar é decidir</b>. Duas pessoas grifam diferente; por isso o documento de mapeamento é entregável.</div>
+  <div class="notes"><b>3 min — o slide mais importante do bloco.</b><br><br>Leia o parágrafo apontando cada grifo e dizendo a <b>natureza</b>, não o nome do campo: "isto é transcrição direta", "isto é dado geográfico". A boa prática é sempre grifar por <b>origem/natureza</b>, não por campo — é isso que garante rastreabilidade.<br><br>Repare que quase tudo é verde. Isso é esperado numa tarefa de extração, e é justamente por isso que a <b>última linha</b> é a mais valiosa: laranja, roxo e vermelho são coisas que <b>não estão no texto</b>.<br><br>O vermelho é o achado do trabalho: informação necessária que a ordem superior <b>não fornece</b>. Nenhum prompt, por melhor que seja, vai extrair o que não está escrito — e quem for consumir o dado precisa saber disso.<br><br>Feche com: <b>grifar é decidir</b>. Duas pessoas grifam diferente; por isso o documento de mapeamento é ele próprio um entregável.</div>
 </section>
 
 <!-- ============ 46 · DO GRIFO AO CAMPO ============ -->
@@ -2281,7 +2281,7 @@ retardar e bloquear.</pre></div>
     <div class="punch destaque"><p>É sempre este caminho: <strong>grifo → regra → campo</strong>. Uma linha do mapeamento vira uma linha do prompt.</p></div>
   </div>
   <div class="brand">IA Generativa · RAG <span class="autor">Maj Luiz Paulo</span></div><div class="pager"></div>
-  <div class="notes"><b>2 min — o slide que responde a pergunta mais frequente do PI.</b><br><br>A pergunta é: "se depois eu escrevo o prompt, para que serve o mapeamento?" A resposta está nos três cartões: <b>cada linha do mapeamento vira uma linha do prompt</b>. Sem mapear, o grupo escreve o prompt no chute e descobre o que faltou só na validação.<br><br>Note o terceiro cartão: o valor sai com o travessão e o parêntese <b>iguais ao original</b>. Reescrever "P Cot 486" como "Ponto Cotado 486" já conta como erro.</div>
+  <div class="notes"><b>2 min — o slide que responde a pergunta mais frequente sobre extração.</b><br><br>A pergunta é: "se depois eu escrevo o prompt, para que serve o mapeamento?" A resposta está nos três cartões: <b>cada linha do mapeamento vira uma linha do prompt</b>. Sem mapear, o prompt sai no chute e o que faltou só aparece na validação.<br><br>Note o terceiro cartão: o valor sai com o travessão e o parêntese <b>iguais ao original</b>. Reescrever "P Cot 486" como "Ponto Cotado 486" já conta como erro.</div>
 </section>
 
 <!-- ============ 47 · AS REGRAS ANTI-INVENÇÃO ============ -->
@@ -2311,7 +2311,7 @@ retardar e bloquear.</pre></div>
     <div class="punch"><p>O erro mais grave não é deixar em branco. É <strong>preencher com um valor que parece certo</strong> — porque ninguém percebe.</p></div>
   </div>
   <div class="brand">IA Generativa · RAG <span class="autor">Maj Luiz Paulo</span></div><div class="pager"></div>
-  <div class="notes"><b>2,5 min.</b> Cada linha da tabela é uma regra que existe porque <b>alguém já se queimou</b>.<br><br>Insista na terceira: a IA adora responder "Claro! Segue o JSON solicitado:" antes do conteúdo. Isso basta para o programa do CDS falhar ao tentar ler a resposta. A regra "sem explicações, sem markdown" resolve.<br><br>E feche com o quadro escuro, devagar. Campo em branco alguém vê e corrige. Campo preenchido com hora inventada entra na Ordem de Operações e ninguém questiona — <b>até a tropa se deslocar na hora errada</b>.</div>
+  <div class="notes"><b>2,5 min.</b> Cada linha da tabela é uma regra que existe porque <b>alguém já se queimou</b>.<br><br>Insista na terceira: a IA adora responder "Claro! Segue o JSON solicitado:" antes do conteúdo. Isso basta para qualquer programa falhar ao tentar ler a resposta. A regra "sem explicações, sem markdown" resolve.<br><br>E feche com o quadro escuro, devagar. Campo em branco alguém vê e corrige. Campo preenchido com hora inventada entra na Ordem de Operações e ninguém questiona — <b>até a tropa se deslocar na hora errada</b>.</div>
 </section>
 
 <!-- ============ 48 · PREPARAR O DOCUMENTO ============ -->
@@ -2377,9 +2377,9 @@ retardar e bloquear.</pre></div>
   <div class="titulo">
     <span class="kick">Encerramento</span>
     <h1>AGORA É COM VOCÊS</h1>
-    <div class="l2"><span></span><b>PROJETO INTERDISCIPLINAR</b><span></span></div>
+    <div class="l2"><span></span><b>EXTRAÇÃO ESTRUTURADA</b><span></span></div>
     <div class="lema">Mapear · Extrair · Conferir</div>
-    <div class="frase">O RAG explica <i>como a máquina encontra</i>. A extração estruturada é <i>o que vocês vão entregar</i>.</div>
+    <div class="frase">O RAG explica <i>como a máquina encontra</i>. A extração estruturada é <i>o que você aplica na prática</i>.</div>
   </div>
 
   <!-- A instrução inteira em um desenho só: o caminho que o documento
@@ -2473,7 +2473,7 @@ retardar e bloquear.</pre></div>
 
   <div class="autoria">Maj Luiz Paulo<br>IA Generativa · RAG</div>
 
-  <div class="notes"><b>Slide de encerramento — 1 min.</b> Use o desenho para recapitular em voz alta, da esquerda para a direita, sem reabrir nenhum assunto: documento, pedaços, números, espaço, ficha. Se a turma acompanhar as cinco estações sem você explicar de novo, a instrução cumpriu o objetivo.<br><br>Duas frases para fechar:<br>1) <b>"O RAG é como a máquina encontra"</b> — foi a maior parte da aula, e é o que explica por que a busca funciona.<br>2) <b>"A extração estruturada é o que vocês entregam"</b> — no PI vocês <b>não</b> vão montar banco vetorial nem fazer chunking.<br><br>Repare que a última estação tem o campo <code>"fonte"</code>. É o mesmo princípio nos dois caminhos: resposta sem origem rastreável não vale, seja da IA para o usuário, seja do grupo para o CDS.<br><br>Encaminhe todo mundo para o documento de diretrizes — é lá que está o passo a passo do trabalho.</div>
+  <div class="notes"><b>Slide de encerramento — 1 min.</b> Use o desenho para recapitular em voz alta, da esquerda para a direita, sem reabrir nenhum assunto: documento, pedaços, números, espaço, ficha. Se a turma acompanhar as cinco estações sem você explicar de novo, a instrução cumpriu o objetivo.<br><br>Duas frases para fechar:<br>1) <b>"O RAG é como a máquina encontra"</b> — foi a maior parte da aula, e é o que explica por que a busca funciona.<br>2) <b>"A extração estruturada é o que você aplica"</b> — aqui <b>não</b> se monta banco vetorial nem se faz chunking.<br><br>Repare que a última estação tem o campo <code>"fonte"</code>. É o mesmo princípio nos dois caminhos: resposta sem origem rastreável não vale, seja da IA para o usuário, seja de quem escreve para quem consome os dados.</div>
 </section>
 
 </div><!-- /deck -->
