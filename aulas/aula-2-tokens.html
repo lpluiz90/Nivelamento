@@ -166,10 +166,10 @@ td.mid{color:var(--accent);font-weight:600}
   background:var(--brasao) center/74% no-repeat, rgba(255,255,255,.94);
   opacity:1;
 }
-/* só na capa (slide 1): o brasão do rodapé já está grande e visível
-   logo abaixo, o do canto ficava redundante — mesmo padrão da Aula 01.
-   O ::fecho (encerramento) também é .poster mas não entra aqui. */
-.poster:not(.fecho)::after{display:none}
+/* Nos slides .poster (capa e encerramento) o brasão já aparece grande
+   no rodapé à esquerda; o do canto superior ficava duplicado. Some nos
+   dois — os demais slides do deck continuam com o brasão do canto. */
+.poster::after{display:none}
 
 .brand .bloco{color:var(--primary-ink)}
 .slide.divider .brand .bloco{color:var(--fos-txt)}
