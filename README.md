@@ -8,6 +8,7 @@ rede): abre offline em qualquer navegador.
 
 ## Aulas
 
+0. [A Cadeia do Dado](aulas/aula-0-cadeia-do-dado.html) — abre a trilha: o mapa das 16 UDs do curso
 1. [RAG e Extração Estruturada](aulas/aula-1-rag-extracao-estruturada.html)
 2. [Tokens](aulas/aula-2-tokens.html)
 3. [Vibe Coding](aulas/aula-3-vibecoding.html)
